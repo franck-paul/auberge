@@ -20,6 +20,10 @@ $_menu['Blog']->addItem(__('Auberge'), 'plugin.php?p=auberge-dc-plugin', urldeco
 */
 
 // Add behaviour callbacks for user lists
+if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
+    $core->addBehavior('adminGetUsers', ['aubergeAdminBehaviors', 'adminGetUsers']);
+    $core->addBehavior('adminUsersSortbyCombo', ['aubergeAdminBehaviors', 'adminUsersSortbyCombo']);
+}
 $core->addBehavior('adminUserListHeader', ['aubergeAdminBehaviors', 'adminUserListHeader']);
 $core->addBehavior('adminUserListValue', ['aubergeAdminBehaviors', 'adminUserListValue']);
 

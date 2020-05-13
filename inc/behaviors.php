@@ -40,12 +40,40 @@ class aubergeAdminBehaviors
         // - options-box remove all except fields which be replaced by hidden fields
         $sidebar['options-box']['title']                         = '';
         $sidebar['options-box']['items']['post_open_comment_tb'] =
-            form::hidden('post_open_comment', $post ? $post->post_open_comment : true) .
-            form::hidden('post_open_tb', $post ? $post->post_open_tb : true);
+        form::hidden('post_open_comment', $post ? $post->post_open_comment : true) .
+        form::hidden('post_open_tb', $post ? $post->post_open_tb : true);
         $sidebar['options-box']['items']['post_password'] = form::hidden('post_password', $post ? $post->post_password : null);
         $sidebar['options-box']['items']['post_url']      = form::hidden('post_url', $post ? $post->post_url : null);
 
         $sidebar['options-box']['items']['auberge'] = '<style type="text/css">#options-box {display: none}</style>';
+    }
+
+    /**
+     * Add custom field when get users list in admin
+     *
+     * @param      array  $params  The parameters
+     */
+    public static function adminGetUsers($params)
+    {
+        if (!empty($params['custom_fields'])) {
+            if (is_array($params['custom_fields'])) {
+                $params['custom_fields'][] = 'room_id';
+            } else {
+                $params['custom_fields'] .= ',room_id';
+            }
+        } else {
+            $params['custom_fields'] = ['room_id'];
+        }
+    }
+
+    /**
+     * Add custom field to sort by combo (used in admin users lists)
+     *
+     * @param      <type>  $opt    The option
+     */
+    public static function adminUsersSortbyCombo($opt)
+    {
+        $opt[0][__('Room')] = 'room_id';
     }
 
     /**
@@ -69,7 +97,11 @@ class aubergeAdminBehaviors
      */
     public static function adminUserListValue($core, $rs, $cols)
     {
-        $room         = aubergeData::getUserRoom($core, $rs->user_id);
+        if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
+            $room = $rs->room_id;
+        } else {
+            $room = aubergeData::getUserRoom($core, $rs->user_id);
+        }
         $cols['room'] = '<td class="nowrap count">' . ($room ?: '') . '</td>';
     }
 
