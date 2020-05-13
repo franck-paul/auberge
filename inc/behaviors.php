@@ -49,25 +49,25 @@ class aubergeAdminBehaviors
     }
 
     /**
-     * Add custom field when get users list in admin
+     * Add columns when get users list in admin
      *
      * @param      array  $params  The parameters
      */
     public static function adminGetUsers($params)
     {
-        if (!empty($params['custom_fields'])) {
-            if (is_array($params['custom_fields'])) {
-                $params['custom_fields'][] = 'room_id';
+        if (!empty($params['columns'])) {
+            if (is_array($params['columns'])) {
+                $params['columns'][] = 'room_id';
             } else {
-                $params['custom_fields'] .= ',room_id';
+                $params['columns'] .= ',room_id';
             }
         } else {
-            $params['custom_fields'] = ['room_id'];
+            $params['columns'] = ['room_id'];
         }
     }
 
     /**
-     * Add custom field to sort by combo (used in admin users lists)
+     * Add room to "sort by" combo (used in admin users lists)
      *
      * @param      <type>  $opt    The option
      */
