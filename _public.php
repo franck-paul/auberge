@@ -20,7 +20,5 @@ $core->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
 $core->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
 
 // Add behaviour callbacks for user lists
-if (version_compare(DC_VERSION, '2.17-dev', '<')) {
-    $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
-    $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
-}
+$core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
+$core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
