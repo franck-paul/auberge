@@ -66,4 +66,37 @@ class aubergeTpl
             '}' . "\n" .
             'echo ' . sprintf($f, '$cls') . '; ?>';
     }
+
+    /*dtd
+    <!ELEMENT tpl:CommentIfEven - O -- displays value if comment is at an even position -->
+    <!ATTLIST tpl:CommentIfEven
+    return    CDATA    #IMPLIED    -- value to display in case of success (default: even)
+    >
+     */
+    public function CommentIfEven($attr)
+    {
+        $ret = isset($attr['return']) ? $attr['return'] : 'even';
+        $ret = html::escapeHTML($ret);
+
+        return
+        '<?php if ($_ctx->comments->index()%2) { ' .
+        "echo '" . addslashes($ret) . "'; } ?>";
+    }
+
+    /*dtd
+    <!ELEMENT tpl:PingIfEven - O -- displays value if trackback is at an even position -->
+    <!ATTLIST tpl:PingIfEven
+    return    CDATA    #IMPLIED    -- value to display in case of success (default: even)
+    >
+     */
+    public function PingIfEven($attr)
+    {
+        $ret = isset($attr['return']) ? $attr['return'] : 'even';
+        $ret = html::escapeHTML($ret);
+
+        return
+        '<?php if ($_ctx->pings->index()%2) { ' .
+        "echo '" . addslashes($ret) . "'; } ?>";
+    }
+
 }

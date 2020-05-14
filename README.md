@@ -33,3 +33,13 @@ Fournit les classes associées :
 * "" si pas de numéro de chambre affectée
 * "room room_nnn" si c'est un résident (chambres 1 à 999)
 * "staff staff_nnn" si c'est un membre du staff (nnn étant égal au numéro de chambre - 999)
+
+## Évolutions
+
+La prochaine 2.17 de Dotclear ajoutera de quoi trier sur des champs supplémentaires (liste d'utilisateurs côté administration) et donc sur le numéro de chambre ; le plugin est déjà codé pour en tenir compte.
+
+Deux balises sont intégrées dans le plugin, balises qui seront dans la 2.17 :
+
+### {{tpl:CommentIfEven}} et {{tpl:PingIfEven}}
+
+Retourne "even" (ou le contenu de l'attribut return="...") si c'est un commentaire/rétrolien pair.
