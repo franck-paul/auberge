@@ -147,9 +147,9 @@ class aubergeAdminBehaviors
     public static function adminDashboardContents($core, $contents)
     {
         // Add modules to the contents stack
-        $ret   = '<div id="auberge" class="box ' . $class . '">' .
+        $ret = '<div id="auberge" class="box ' . $class . '">' .
         '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
-        $room_id = aubergeData::getUserRoom($core, $core->auth->userID());
+        $room_id  = aubergeData::getUserRoom($core, $core->auth->userID());
         $is_staff = false;
         if ($room_id > 0 && $room_id < 1000) {
             // Single resident
@@ -165,6 +165,26 @@ class aubergeAdminBehaviors
         }
         $ret .= '</div>';
         $contents[] = new ArrayObject([$ret]);
+    }
+
+    public function adminDashboardIcons($core, $icons)
+    {
+        $icons['auberge'] = new ArrayObject([
+            __('auberge'),
+            $core->adminurl->get('admin.plugin.auberge'),
+            dcPage::getPF('auberge/icon-db.png')
+        ]);
+    }
+
+    public function adminDashboardFavorites($core, $favs)
+    {
+        $favs->register('auberge', [
+            'title'       => __('Auberge'),
+            'url'         => $core->adminurl->get('admin.plugin.auberge'),
+            'small-icon'  => dcPage::getPF('auberge/icon.png'),
+            'large-icon'  => dcPage::getPF('auberge/icon-db.png'),
+            'permissions' => 'contentadmin'
+        ]);
     }
 }
 

@@ -17,6 +17,9 @@ if (!defined('DC_CONTEXT_ADMIN')) {return;}
 $_menu['Blog']->addItem(__('Auberge'), 'plugin.php?p=auberge', urldecode(dcPage::getPF('auberge/icon.png')),
     preg_match('/plugin.php\?p=auberge(&.*)?$/', $_SERVER['REQUEST_URI']),
     $core->auth->check('usage,contentadmin', $core->blog->id));
+
+$core->addBehavior('adminDashboardIcons', ['aubergeAdminBehaviors', 'adminDashboardIcons']);
+$core->addBehavior('adminDashboardFavorites', ['aubergeAdminBehaviors', 'adminDashboardFavorites']);
 */
 
 // Add behaviour callbacks for user lists
