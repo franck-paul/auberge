@@ -147,7 +147,8 @@ class aubergeAdminBehaviors
     public static function adminDashboardContents($core, $contents)
     {
         // Add modules to the contents stack
-        $ret = '<div id="auberge" class="box ' . $class . '">' .
+        $class = 'small';   // Small box is enough, up to now
+        $ret   = '<div id="auberge" class="box ' . $class . '">' .
         '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
         $room_id  = aubergeData::getUserRoom($core, $core->auth->userID());
         $is_staff = false;
@@ -165,6 +166,11 @@ class aubergeAdminBehaviors
         }
         $ret .= '</div>';
         $contents[] = new ArrayObject([$ret]);
+
+        if (!$core->auth->isSuperAdmin() && !$core->blog && $core->auth->check('contentadmin', $core->blog->id)) {
+            // Remove Quick entry from Dashboard
+            $core->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
+        }
     }
 
     public function adminDashboardIcons($core, $icons)
