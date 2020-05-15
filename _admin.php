@@ -14,8 +14,8 @@
 if (!defined('DC_CONTEXT_ADMIN')) {return;}
 
 /*
-$_menu['Blog']->addItem(__('Auberge'), 'plugin.php?p=auberge-dc-plugin', urldecode(dcPage::getPF('auberge-dc-plugin/icon.png')),
-    preg_match('/plugin.php\?p=auberge-dc-plugin(&.*)?$/', $_SERVER['REQUEST_URI']),
+$_menu['Blog']->addItem(__('Auberge'), 'plugin.php?p=auberge', urldecode(dcPage::getPF('auberge/icon.png')),
+    preg_match('/plugin.php\?p=auberge(&.*)?$/', $_SERVER['REQUEST_URI']),
     $core->auth->check('usage,contentadmin', $core->blog->id));
 */
 

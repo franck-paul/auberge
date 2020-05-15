@@ -148,7 +148,7 @@ class aubergeAdminBehaviors
     {
         // Add modules to the contents stack
         $ret   = '<div id="auberge" class="box ' . $class . '">' .
-        '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge-dc-plugin/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
+        '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
         $room_id = aubergeData::getUserRoom($core, $core->auth->userID());
         $is_staff = false;
         if ($room_id > 0 && $room_id < 1000) {
