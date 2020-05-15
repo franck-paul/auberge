@@ -29,7 +29,7 @@ class aubergeTpl
             '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->posts->user_id);' . "\n" .
             '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
             'if ($_ctx->is_staff) {' . "\n" .
-            '   $tmp = \'' . __('Staff member') . '\';' . "\n" .
+            '   $tmp = ($_ctx->archives ? \'' . __('Staff') . '\' : \'' . __('Staff member') . '\');' . "\n" .
             '} else {' . "\n" .
             '   if ($_ctx->room_id) {' . "\n" .
             '       $tmp = sprintf(\'' . __('Room %s') . '\', $_ctx->room_id);' . "\n" .
