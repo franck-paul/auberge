@@ -14,12 +14,11 @@
 if (!defined('DC_RC_PATH')) {return;}
 
 // Public behaviours
+$core->addBehavior('coreBlogGetComments', ['aubergePublicBehaviors', 'coreBlogGetComments']);
 
 // Public template tags
 $core->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
 $core->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
-
-// Add behaviour callbacks for user lists
 $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
 $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
 

@@ -192,6 +192,27 @@ class aubergeAdminBehaviors
 
 class aubergePublicBehaviors
 {
+    public static function coreBlogGetComments($rs)
+    {
+        $rs->extend('rsAubergeExtCommentPublic');
+    }
+}
+
+class rsAubergeExtCommentPublic extends rsExtComment
+{
+    /**
+    Returns whether comment is from the post author.
+
+    @param    rs    Invisible parameter
+    @return    <b>boolean</b>
+     */
+    public static function isMe($rs)
+    {
+        return
+        $rs->comment_email &&
+        $rs->comment_email == $rs->user_email &&
+        $rs->comment_site == $rs->user_url;
+    }
 }
 
 // URL handlers
