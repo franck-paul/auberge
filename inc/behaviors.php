@@ -144,6 +144,28 @@ class aubergeAdminBehaviors
         $cur->room_id = $_POST['user_room_id'];
     }
 
+    public static function adminDashboardContents($core, $contents)
+    {
+        // Add modules to the contents stack
+        $ret   = '<div id="auberge" class="box ' . $class . '">' .
+        '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge-dc-plugin/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
+        $room_id = aubergeData::getUserRoom($core, $core->auth->userID());
+        $is_staff = false;
+        if ($room_id > 0 && $room_id < 1000) {
+            // Single resident
+        } elseif ($room_id >= 1000) {
+            $is_staff = true;
+            $room_id -= 999;
+        }
+        $info = $is_staff ? __('Staff room number:') : __('Room number:');
+        if ($room_id > 0) {
+            $ret .= '<p>' . $info . ' ' . sprintf('%d', $room_id) . '</p>';
+        } else {
+            $ret .= '<p>' . __('No room') . '</p>';
+        }
+        $ret .= '</div>';
+        $contents[] = new ArrayObject([$ret]);
+    }
 }
 
 // Public behaviours

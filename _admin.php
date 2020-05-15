@@ -34,3 +34,6 @@ $core->addBehavior('adminBeforeUserUpdate', ['aubergeAdminBehaviors', 'adminBefo
 
 // Add behaviour callbacks for post form
 $core->addBehavior('adminPostFormItems', ['aubergeAdminBehaviors', 'adminPostFormItems']);
+
+// Dashboard behaviours
+$core->addBehavior('adminDashboardContents', ['aubergeAdminBehaviors', 'adminDashboardContents']);

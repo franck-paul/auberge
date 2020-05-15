@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 auberge module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-12 14:01+0200\n"
+"POT-Creation-Date: 2020-05-15 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,6 +26,15 @@ msgid "Room number:"
 msgstr ""
 
 msgid "0 = not set, 1 to 999 = residents, 1000+ = staff."
+msgstr ""
+
+msgid "Staff room number:"
+msgstr ""
+
+msgid "No room"
+msgstr ""
+
+msgid "Staff"
 msgstr ""
 
 msgid "Staff member"

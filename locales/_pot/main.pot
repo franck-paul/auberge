@@ -5,9 +5,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Dotclear 2 auberge module\n"
+"Project-Id-Version: Dotclear 2 auberge-dc-plugin module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-12 14:01+0200\n"
+"POT-Creation-Date: 2020-05-15 10:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,27 +16,42 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../git-plugins/auberge//inc/behaviors.php:20
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:76
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:88
 msgid "Room"
 msgstr ""
 
-#: ../git-plugins/auberge//inc/behaviors.php:40
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:124
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:151
 msgid "Auberge"
 msgstr ""
 
-#: ../git-plugins/auberge//inc/behaviors.php:41
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:125
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:160
 msgid "Room number:"
 msgstr ""
 
-#: ../git-plugins/auberge//inc/behaviors.php:48
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:132
 msgid "0 = not set, 1 to 999 = residents, 1000+ = staff."
 msgstr ""
 
-#: ../git-plugins/auberge//inc/tpl.php:32
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:160
+msgid "Staff room number:"
+msgstr ""
+
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:164
+msgid "No room"
+msgstr ""
+
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/tpl.php:32
+msgid "Staff"
+msgstr ""
+
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/tpl.php:32
 msgid "Staff member"
 msgstr ""
 
-#: ../git-plugins/auberge//inc/tpl.php:35
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/tpl.php:35
 #, php-format
 msgid "Room %s"
 msgstr ""
