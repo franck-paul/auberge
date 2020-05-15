@@ -16,6 +16,7 @@ if (!defined('DC_RC_PATH')) {return;}
 // Public and Admin mode
 
 $__autoload['aubergePublicBehaviors'] = dirname(__FILE__) . '/inc/behaviors.php';
+$__autoload['aubergeUrlHandlers']     = dirname(__FILE__) . '/inc/behaviors.php';
 $__autoload['aubergeTpl']             = dirname(__FILE__) . '/inc/tpl.php';
 $__autoload['aubergeData']            = dirname(__FILE__) . '/inc/data.php';
 

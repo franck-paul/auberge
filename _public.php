@@ -22,3 +22,6 @@ $core->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
 // Add behaviour callbacks for user lists
 $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
 $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
+
+// Add URL handler for archives
+$core->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);

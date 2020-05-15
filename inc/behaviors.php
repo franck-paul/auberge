@@ -151,3 +151,26 @@ class aubergeAdminBehaviors
 class aubergePublicBehaviors
 {
 }
+
+// URL handlers
+
+class aubergeUrlHandlers extends dcUrlHandlers
+{
+    /**
+     * URL Handler for single-page archive with redirect to page anchor if necessary
+     *
+     * @param      <type>  $args   The arguments
+     */
+    public static function archive($args)
+    {
+        $_ctx = &$GLOBALS['_ctx'];
+        $core = &$GLOBALS['core'];
+
+        $anchor = '';
+        if (preg_match('|^/([0-9]{4})/([0-9]{2})$|', $args, $m)) {
+            $anchor = '#Y' . $m[1] . '-M' . $m[2];
+            http::redirect($core->blog->url . $core->url->getURLFor('archive') . $anchor);
+        }
+        self::serveDocument('archive.html');
+    }
+}
