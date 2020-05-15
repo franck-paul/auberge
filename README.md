@@ -34,12 +34,24 @@ Fournit les classes associées :
 * "room room_nnn" si c'est un résident (chambres 1 à 999)
 * "staff staff_nnn" si c'est un membre du staff (nnn étant égal au numéro de chambre - 999)
 
-## Évolutions
-
-La prochaine 2.17 de Dotclear ajoutera de quoi trier sur des champs supplémentaires (liste d'utilisateurs côté administration) et donc sur le numéro de chambre ; le plugin est déjà codé pour en tenir compte.
-
-Deux balises sont intégrées dans le plugin, balises qui seront dans la 2.17 :
-
 ### {{tpl:CommentIfEven}} et {{tpl:PingIfEven}}
 
 Retourne "even" (ou le contenu de l'attribut return="...") si c'est un commentaire/rétrolien pair.
+
+### {{tpl:CommentIfMe}}
+
+Le plugin limite la vérification à l'email, le site est ignoré.
+
+## Divers
+
+* Le module Entrée rapide n'est pas affiché pour les utilisateurs standards, hors admins et superadmin.
+* Un URL handler a été mis en place pour rediriger les archives mensuelles vers la page des archives globales, avec un accès direct au mois et année demandés.
+* Un module de tableau de bord est affiché en permanence avec :
+  * Le numéro de chambre affectée (résidents ou staff)
+  * Le pseudo utilisé (signature publique des textes)
+  * L'email utilisé (masqué publiquement)
+  * L'identité réelle (connue à l'inscription)
+
+## Évolutions
+
+La prochaine 2.17 de Dotclear ajoutera de quoi trier sur des champs supplémentaires (liste d'utilisateurs côté administration) et donc sur le numéro de chambre ; le plugin est déjà codé pour en tenir compte.

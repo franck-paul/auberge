@@ -146,10 +146,12 @@ class aubergeAdminBehaviors
 
     public static function adminDashboardContents($core, $contents)
     {
-        // Add modules to the contents stack
-        $class = 'small';   // Small box is enough, up to now
+                          // Add modules to the contents stack
+        $class = 'small'; // Small box is enough, up to now
         $ret   = '<div id="auberge" class="box ' . $class . '">' .
         '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
+
+        // Room number
         $room_id  = aubergeData::getUserRoom($core, $core->auth->userID());
         $is_staff = false;
         if ($room_id > 0 && $room_id < 1000) {
@@ -160,10 +162,25 @@ class aubergeAdminBehaviors
         }
         $info = $is_staff ? __('Staff room number:') : __('Room number:');
         if ($room_id > 0) {
-            $ret .= '<p>' . $info . ' ' . sprintf('%d', $room_id) . '</p>';
+            $ret .= '<p>' . $info . ' <strong>' . sprintf('%d', $room_id) . '</strong></p>';
         } else {
             $ret .= '<p>' . __('No room') . '</p>';
         }
+
+        // Pseudo
+        $ret .= '<p>' . __('Pseudo:') . ' <strong>' . $core->auth->getInfo('user_displayname') . '</strong> ' .
+        __('(used as a public signature)') . '</p>';
+
+        // User email
+        $ret .= '<p>' . __('Email:') . ' <strong>' . $core->auth->getInfo('user_email') . '</strong> ' .
+        __('(not published)') . '</p>';
+
+        // User identity
+        $full_name = function ($fn, $ln) {return $fn . ($fn ? ' ' : '') . $ln;};
+        $ret .= '<p>' . __('Real identity:') . ' <strong>' .
+        $full_name($core->auth->getInfo('user_firstname'), $core->auth->getInfo('user_name')) . '</strong> ' .
+        __('(not published)') . '</p>';
+
         $ret .= '</div>';
         $contents[] = new ArrayObject([$ret]);
 
