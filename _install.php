@@ -24,7 +24,7 @@ try
 {
     // Database schema
     $s = new dbStruct($core->con, $core->prefix);
-    $s->user->room_id('integer', 0, false);
+    $s->user->room_id('integer', 0, true, 0);
 
     // Schema installation
     $si      = new dbStruct($core->con, $core->prefix);
