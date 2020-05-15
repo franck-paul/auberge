@@ -35,7 +35,7 @@ msgid "No room"
 msgstr "Pas de chambre affectée"
 
 msgid "Staff"
-msgstr "Membre du personnel"
+msgstr ""
 
 msgid "Staff member"
 msgstr "Membre du personnel"
