@@ -22,7 +22,7 @@ $this->registerModule(
         'requires'    => [['core', '2.16']],   // Requirements
         'permissions' => 'usage,contentadmin', // Permissions
         'type'        => 'plugin',             // Type
-        'priority'    => 999,                  // Priority
+        'priority'    => 1500,                 // Priority
         'settings'    => [                     // Settings
         ]
     ]

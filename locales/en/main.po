@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 auberge module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-15 19:33+0200\n"
+"POT-Creation-Date: 2020-05-16 09:12+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -28,25 +28,36 @@ msgstr ""
 msgid "0 = not set, 1 to 999 = residents, 1000+ = staff."
 msgstr ""
 
-msgid "Staff room number:"
+#, php-format
+msgid "%s (staff member)"
 msgstr ""
 
-msgid "No room"
+#, php-format
+msgid "Welcome to the hostel %s!"
 msgstr ""
 
-msgid "Pseudo:"
+msgid "You're staying in room number"
 msgstr ""
 
-msgid "(used as a public signature)"
+msgid "You're staying in the <strong>staff</strong> room number"
 msgstr ""
 
-msgid "Email:"
+msgid "No room assigned yet."
 msgstr ""
 
-msgid "(not published)"
+msgid "Your dates of stay are not yet known."
 msgstr ""
 
-msgid "Real identity:"
+#, php-format
+msgid "Your nickname “<strong>%s</strong>” must be used everywhere (<a href=\"%s\">blog</a>, comments, <a href=\"%s\">forum</a>, …).<br />The email you use for this game is: <strong>%s</strong> (it will be not published)."
+msgstr ""
+
+#, php-format
+msgid "<a href=\"%s\">Contact the organizers of the game</a>"
+msgstr ""
+
+#, php-format
+msgid "<a href=\"%s\">Forum</a>"
 msgstr ""
 
 msgid "auberge"

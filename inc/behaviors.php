@@ -146,12 +146,16 @@ class aubergeAdminBehaviors
 
     public static function adminDashboardContents($core, $contents)
     {
-                          // Add modules to the contents stack
-        $class = 'small'; // Small box is enough, up to now
-        $ret   = '<div id="auberge" class="box ' . $class . '">' .
-        '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h3>';
+        // Add modules to the contents stack
+        $forum_url = '#';
+        if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
+            $contact_url = $core->url->getURLFor('contactme');
+        } else {
+            // URL is not available in dashboard for non-admin
+            $contact_url = $core->blog->getQmarkURL() . 'contact';
+        }
 
-        // Room number
+        // Get user info
         $room_id  = aubergeData::getUserRoom($core, $core->auth->userID());
         $is_staff = false;
         if ($room_id > 0 && $room_id < 1000) {
@@ -160,32 +164,49 @@ class aubergeAdminBehaviors
             $is_staff = true;
             $room_id -= 999;
         }
-        $info = $is_staff ? __('Staff room number:') : __('Room number:');
+
+        // Compose module content
+        $ret = '<div id="auberge" class="box badgeable">';
+
+        $title = $is_staff ? __('%s (staff member)') : __('Welcome to the hostel %s!');
+
+        // Title: Pseudo
+        $ret .= '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
+        sprintf($title, $core->auth->getInfo('user_displayname')) . '</h3>';
+
+        // Room number
         if ($room_id > 0) {
-            $ret .= '<p>' . $info . ' <strong>' . sprintf('%d', $room_id) . '</strong></p>';
+            $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
+            $ret .= '<p>' . $info . ' <strong class="badge badge-inline">' . sprintf('%d', $room_id) . '</strong><br />';
         } else {
-            $ret .= '<p>' . __('No room') . '</p>';
+            $ret .= '<p>' . __('No room assigned yet.') . '<br />';
         }
+        // Stay dates
+        $ret .= __('Your dates of stay are not yet known.') . '</p>';
 
-        // Pseudo
-        $ret .= '<p>' . __('Pseudo:') . ' <strong>' . $core->auth->getInfo('user_displayname') . '</strong> ' .
-        __('(used as a public signature)') . '</p>';
+        // User pseudo and email
+        $info = sprintf(
+            __('Your nickname “<strong>%s</strong>” must be used everywhere (<a href="%s">blog</a>, comments, <a href="%s">forum</a>, …).<br />The email you use for this game is: <strong>%s</strong> (it will be not published).'),
+            $core->auth->getInfo('user_displayname'),
+            $core->blog->url,
+            $forum_url,
+            $core->auth->getInfo('user_email')
+        );
+        $ret .= '<p>' . $info . '</p>';
 
-        // User email
-        $ret .= '<p>' . __('Email:') . ' <strong>' . $core->auth->getInfo('user_email') . '</strong> ' .
-        __('(not published)') . '</p>';
-
-        // User identity
-        $full_name = function ($fn, $ln) {return $fn . ($fn ? ' ' : '') . $ln;};
-        $ret .= '<p>' . __('Real identity:') . ' <strong>' .
-        $full_name($core->auth->getInfo('user_firstname'), $core->auth->getInfo('user_name')) . '</strong> ' .
-        __('(not published)') . '</p>';
+        // Contact/Forum infos
+        $ret .= '<hr />' .
+        '<p>' .
+        sprintf(__('<a href="%s">Contact the organizers of the game</a>'), $contact_url) . '<br />' .
+        sprintf(__('<a href="%s">Forum</a>'), $forum_url) .
+            '</p>';
 
         $ret .= '</div>';
         $contents[] = new ArrayObject([$ret]);
 
+        // Other actions on Dashboard
         if (!$core->auth->isSuperAdmin() && !$core->blog && $core->auth->check('contentadmin', $core->blog->id)) {
-            // Remove Quick entry from Dashboard
+            // Remove uick entry from Dashboard
             $core->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
         }
     }
