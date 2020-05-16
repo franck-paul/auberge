@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 auberge-dc-plugin module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-16 11:10+0200\n"
+"POT-Creation-Date: 2020-05-16 12:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,61 +16,61 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:76
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:88
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:82
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:94
 msgid "Room"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:124
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:226
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:131
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:232
 msgid "Auberge"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:125
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:132
 msgid "Room number:"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:132
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:139
 msgid "0 = not set, 1 to 999 = residents, 1000+ = staff."
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:171
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:178
 #, php-format
 msgid "Welcome to the hostel %s!"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:179
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:186
 msgid "You're staying in room number"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:179
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:186
 msgid "You're staying in the <strong>staff</strong> room number"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:182
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:190
 msgid "No room assigned yet."
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:185
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:193
 msgid "Your dates of stay are not yet known."
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:189
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:197
 #, php-format
-msgid "Your nickname “<strong>%s</strong>” must be used everywhere (<a href=\"%s\">blog</a>, comments, <a href=\"%s\">forum</a>, …).<br />The email you use for this game is: <strong>%s</strong> (it will be not published)."
+msgid "Your nickname “<strong>%s</strong>” must be used to comment on the blog.<br />The email you use for this game is: <strong>%s</strong> (it will be not published)."
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:200
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:206
 #, php-format
 msgid "<a href=\"%s\">Contact the organizers of the game</a>"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:201
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:207
 #, php-format
 msgid "<a href=\"%s\">Forum</a>"
 msgstr ""
 
-#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:217
+#: ../auberge-des-blogueurs/auberge-dc-plugin/inc/behaviors.php:223
 msgid "auberge"
 msgstr ""
 

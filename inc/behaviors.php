@@ -194,10 +194,8 @@ class aubergeAdminBehaviors
 
         // User pseudo and email
         $info = sprintf(
-            __('Your nickname “<strong>%s</strong>” must be used everywhere (<a href="%s">blog</a>, comments, <a href="%s">forum</a>, …).<br />The email you use for this game is: <strong>%s</strong> (it will be not published).'),
+            __('Your nickname “<strong>%s</strong>” must be used to comment on the blog.<br />The email you use for this game is: <strong>%s</strong> (it will be not published).'),
             $core->auth->getInfo('user_displayname'),
-            $core->blog->url,
-            $forum_url,
             $core->auth->getInfo('user_email')
         );
         $ret .= '<p>' . $info . '</p>';
