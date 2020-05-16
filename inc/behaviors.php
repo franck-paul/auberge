@@ -15,6 +15,12 @@
 
 class aubergeAdminBehaviors
 {
+    public static function adminPageHTMLHead()
+    {
+        echo
+        dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin.css')), 'screen', $version);
+    }
+
     public static function adminPostFormItems($main, $sidebar, $post)
     {
         global $core;
@@ -121,7 +127,8 @@ class aubergeAdminBehaviors
         }
 
         echo
-        '<div class="fieldset"><h5 id="auberge">' . __('Auberge') . '</h5>' .
+        '<div class="fieldset"><h5 id="auberge">' .
+            '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
         '<p class="field"><label for="user_room_id">' . __('Room number:') . '</label> ' .
         form::number('user_room_id', [
             'min'     => 0,
@@ -168,7 +175,7 @@ class aubergeAdminBehaviors
         // Compose module content
         $ret = '<div id="auberge" class="box badgeable">';
 
-        $title = $is_staff ? __('%s (staff member)') : __('Welcome to the hostel %s!');
+        $title = __('Welcome to the hostel %s!');
 
         // Title: Pseudo
         $ret .= '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
@@ -177,7 +184,8 @@ class aubergeAdminBehaviors
         // Room number
         if ($room_id > 0) {
             $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
-            $ret .= '<p>' . $info . ' <strong class="badge badge-inline">' . sprintf('%d', $room_id) . '</strong><br />';
+            $ret .= '<p>' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
+                sprintf('%d', $room_id) . '</strong><br />';
         } else {
             $ret .= '<p>' . __('No room assigned yet.') . '<br />';
         }

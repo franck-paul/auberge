@@ -22,6 +22,9 @@ $core->addBehavior('adminDashboardIcons', ['aubergeAdminBehaviors', 'adminDashbo
 $core->addBehavior('adminDashboardFavorites', ['aubergeAdminBehaviors', 'adminDashboardFavorites']);
 */
 
+// Generic admin behavior callbacks
+$core->addBehavior('adminPageHTMLHead', ['aubergeAdminBehaviors', 'adminPageHTMLHead']);
+
 // Add behaviour callbacks for user lists
 if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
     $core->addBehavior('adminGetUsers', ['aubergeAdminBehaviors', 'adminGetUsers']);

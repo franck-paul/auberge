@@ -1,0 +1,4 @@
+/* Align room number badge with the text */
+#auberge .badge-inline {
+  vertical-align: inherit;
+}

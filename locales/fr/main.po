@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 auberge module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-16 09:12+0200\n"
+"POT-Creation-Date: 2020-05-16 11:10+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -27,10 +27,6 @@ msgstr "Numéro de chambre :"
 
 msgid "0 = not set, 1 to 999 = residents, 1000+ = staff."
 msgstr "0 = inconnu, 1 à 999 = résidents, 1000+ = membre du personnel"
-
-#, php-format
-msgid "%s (staff member)"
-msgstr "%s (membre du personnel)"
 
 #, php-format
 msgid "Welcome to the hostel %s!"
