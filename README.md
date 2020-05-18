@@ -2,13 +2,19 @@
 
 ## Data
 
-Ajout d'un champ room_id (integer) dans la table user
+### Ajout d'un champ room_id (integer) dans la table user
 
-Par convention:
+Par convention :
 
 * 0 = utilisateur non affecté
 * 1 à 999 = numéro de la chambre (résident) à laquelle est affectée l'utilisateur
 * 1000+ = numéro du membre du personnel correspondant à l'utilisateur
+
+### Ajout d'un champ staff_role (chaîne de caractère) dans la table user
+
+Par convention :
+
+Seuls les membres du personnel (numéro de chambre >= 1000) peuvent avoir un rôle défini qui sera affiché en lieu et place du numéro de chambre qui leur sera attribué.
 
 ## Balises template
 
@@ -18,13 +24,15 @@ Exemple :
 <h3 class="{{tpl:AuthorRoomClass}}">{{tpl:AuthorRoom}}</h3>
 ```
 
-### {{tpl:AuthorRoom}}
+### {{tpl:AuthorRoom [role="1"]}}
 
 Fournit l'intitulé en fonction du numéro de chambre affecté à l'auteur du billet :
 
 * "" si pas de numéro de chambre affectée
 * "Chambre nnn" si c'est un résident
 * "Membre du personnel" si c'est un membre du staff
+
+Si l'attribut ```role="1"``` est ajouté alors le rôle de l'auteur, si celui-ci est connu, sera affiché en lieu et place de la mention "Membre du personnel".
 
 ### {{tpl:AuthorRoomClass}}
 

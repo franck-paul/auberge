@@ -17,8 +17,10 @@ class aubergeAdminBehaviors
 {
     public static function adminPageHTMLHead()
     {
+        global $core;
+
         echo
-        dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin.css')), 'screen', $version);
+        dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin.css')), 'screen', $core->getVersion('auberge'));
     }
 
     public static function adminPostFormItems($main, $sidebar, $post)
