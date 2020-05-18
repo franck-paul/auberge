@@ -25,6 +25,7 @@ try
     // Database schema
     $s = new dbStruct($core->con, $core->prefix);
     $s->user->room_id('integer', 0, true, 0);
+    $s->user->staff_role('varchar', 255, true, null);
 
     // Schema installation
     $si      = new dbStruct($core->con, $core->prefix);

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 auberge module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-16 12:52+0200\n"
+"POT-Creation-Date: 2020-05-18 14:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,9 @@ msgstr ""
 msgid "Room"
 msgstr ""
 
+msgid "Staff role"
+msgstr ""
+
 msgid "Auberge"
 msgstr ""
 
@@ -26,6 +29,15 @@ msgid "Room number:"
 msgstr ""
 
 msgid "0 = not set, 1 to 999 = residents, 1000+ = staff."
+msgstr ""
+
+msgid "Staff role:"
+msgstr ""
+
+msgid "staff role"
+msgstr ""
+
+msgid "Used only for staff member."
 msgstr ""
 
 #, php-format
@@ -36,6 +48,10 @@ msgid "You're staying in room number"
 msgstr ""
 
 msgid "You're staying in the <strong>staff</strong> room number"
+msgstr ""
+
+#, php-format
+msgid "Your staff position is: <strong>%s</strong>"
 msgstr ""
 
 msgid "No room assigned yet."

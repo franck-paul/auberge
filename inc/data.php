@@ -32,4 +32,24 @@ class aubergeData
 
         return $rs->room_id;
     }
+
+    /**
+     * Gets the user staff role.
+     *
+     * @param      <type>  $core     The core
+     * @param      <type>  $user_id  The user identifier
+     *
+     * @return     <type>  The user staff role.
+     */
+    public static function getUserStaffRole($core, $user_id)
+    {
+        $sql =
+        'SELECT U.staff_role ' .
+        'FROM ' . $core->prefix . 'user U ' .
+        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+
+        $rs = $core->con->select($sql);
+
+        return $rs->staff_role;
+    }
 }

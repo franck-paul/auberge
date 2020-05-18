@@ -64,11 +64,12 @@ class aubergeAdminBehaviors
         if (!empty($params['columns'])) {
             if (is_array($params['columns'])) {
                 $params['columns'][] = 'room_id';
+                $params['columns'][] = 'staff_role';
             } else {
-                $params['columns'] .= ',room_id';
+                $params['columns'] .= ',room_id,staff_role';
             }
         } else {
-            $params['columns'] = ['room_id'];
+            $params['columns'] = ['room_id', 'staff_role'];
         }
     }
 
@@ -92,6 +93,7 @@ class aubergeAdminBehaviors
     public static function adminUserListHeader($core, $rs, $cols)
     {
         $cols['room'] = '<th scope="col" class="nowrap">' . __('Room') . '</th>';
+        $cols['role'] = '<th scope="col" class="nowrap">' . __('Staff role') . '</th>';
     }
 
     /**
@@ -105,10 +107,13 @@ class aubergeAdminBehaviors
     {
         if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
             $room = $rs->room_id;
+            $role = $rs->staff_role;
         } else {
             $room = aubergeData::getUserRoom($core, $rs->user_id);
+            $role = aubergeData::getUserStaffRole($core, $rs->user_id);
         }
         $cols['room'] = '<td class="nowrap count">' . ($room ?: '') . '</td>';
+        $cols['role'] = '<td class="nowrap">' . ($role ?: '') . '</td>';
     }
 
     /**
@@ -122,13 +127,15 @@ class aubergeAdminBehaviors
 
         if ($rs instanceof record) {
             $room = aubergeData::getUserRoom($core, $rs->user_id);
+            $role = aubergeData::getUserStaffRole($core, $rs->user_id);
         } else {
             $room = 0;
+            $role = '';
         }
 
         echo
         '<div class="fieldset"><h5 id="auberge">' .
-            '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
+        '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
         '<p class="field"><label for="user_room_id">' . __('Room number:') . '</label> ' .
         form::number('user_room_id', [
             'min'     => 0,
@@ -137,6 +144,13 @@ class aubergeAdminBehaviors
         ]) .
         '</p>' .
         '<p class="form-note">' . __('0 = not set, 1 to 999 = residents, 1000+ = staff.') . '</p>' .
+        '<p class="field"><label for="user_staff_role">' . __('Staff role:') . '</label> ' .
+        form::field('user_staff_role', 20, 255, [
+            'default'      => html::escapeHTML($role),
+            'autocomplete' => __('staff role')
+        ]) .
+        '</p>' .
+        '<p class="form-note">' . __('Used only for staff member.') . '</p>' .
             '</div>';
     }
 
@@ -148,7 +162,8 @@ class aubergeAdminBehaviors
      */
     public static function adminBeforeUserUpdate($cur, $user_id = '')
     {
-        $cur->room_id = $_POST['user_room_id'];
+        $cur->room_id    = $_POST['user_room_id'];
+        $cur->staff_role = $_POST['user_staff_role'];
     }
 
     public static function adminDashboardContents($core, $contents)
@@ -163,8 +178,9 @@ class aubergeAdminBehaviors
         }
 
         // Get user info
-        $room_id  = aubergeData::getUserRoom($core, $core->auth->userID());
-        $is_staff = false;
+        $room_id    = aubergeData::getUserRoom($core, $core->auth->userID());
+        $staff_role = aubergeData::getUserStaffRole($core, $core->auth->userID());
+        $is_staff   = false;
         if ($room_id > 0 && $room_id < 1000) {
             // Single resident
         } elseif ($room_id >= 1000) {
@@ -185,7 +201,10 @@ class aubergeAdminBehaviors
         if ($room_id > 0) {
             $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
             $ret .= '<p>' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
-                sprintf('%d', $room_id) . '</strong><br />';
+            sprintf('%d', $room_id) . '</strong><br />';
+            if ($staff_role) {
+                $ret .= sprintf(__('Your staff position is: <strong>%s</strong>'), $staff_role) . '<br />';
+            }
         } else {
             $ret .= '<p>' . __('No room assigned yet.') . '<br />';
         }
