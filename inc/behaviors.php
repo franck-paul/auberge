@@ -164,7 +164,7 @@ class aubergeAdminBehaviors
      */
     public static function adminBeforeUserUpdate($cur, $user_id = '')
     {
-        $cur->room_id    = $_POST['user_room_id'];
+        $cur->room_id    = (integer) $_POST['user_room_id'];
         $cur->staff_role = $_POST['user_staff_role'];
     }
 
