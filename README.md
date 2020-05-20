@@ -55,10 +55,10 @@ Le plugin limite la vérification à l'email, le site est ignoré.
 * Le module Entrée rapide n'est pas affiché pour les utilisateurs standards, hors admins et superadmin.
 * Un URL handler a été mis en place pour rediriger les archives mensuelles vers la page des archives globales, avec un accès direct au mois et année demandés.
 * Un module de tableau de bord est affiché en permanence avec :
+  * Le pseudo utilisé (signature publique des textes) en titre du module
   * Le numéro de chambre affectée (résidents ou staff)
-  * Le pseudo utilisé (signature publique des textes)
+  * Les dates d'arrivées et de départs si elles sont connues
   * L'email utilisé (masqué publiquement)
-  * L'identité réelle (connue à l'inscription)
 
 ## Évolutions
 
