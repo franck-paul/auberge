@@ -21,6 +21,7 @@ $core->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
 $core->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
 $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
 $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
+$core->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
 
 // Add URL handler for archives
 $core->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);

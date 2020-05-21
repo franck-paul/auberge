@@ -105,4 +105,12 @@ class aubergeTpl
         "echo '" . addslashes($ret) . "'; } ?>";
     }
 
+    /*dtd
+    <!ELEMENT tpl:BlogShortname - 0 -- Blog ID -->
+     */
+    public function BlogShortname($attr)
+    {
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : $core->blog->id)') . '; ?>';
+    }
 }

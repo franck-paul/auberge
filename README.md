@@ -50,6 +50,16 @@ Retourne "even" (ou le contenu de l'attribut return="...") si c'est un commentai
 
 Le plugin limite la vérification à l'email, le site est ignoré.
 
+### {{tpl:BlogShortname}}
+
+Retourne la valeur de la constance DC_BLOG_SHORTNAME définie par exemple dans le fichier inc/condig.php, ou l'id du blog si elle ne l'est pas.
+
+Exemple d'utilisation :
+
+```html
+<link rel="stylesheet" type="text/css" href="{{tpl:BlogThemeURL}}/overwrite-{{tpl:BlogShortname}}.css" media="screen" />
+```
+
 ## Divers
 
 * Le module Entrée rapide n'est pas affiché pour les utilisateurs standards, hors admins et superadmin.
