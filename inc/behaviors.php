@@ -19,8 +19,16 @@ class aubergeAdminBehaviors
     {
         global $core;
 
+        // Ajout feuille de style spécifique
         echo
         dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin.css')), 'screen', $core->getVersion('auberge'));
+
+        // Ajout favicon spécifique
+        if ($core->auth->user_prefs->interface->hide_std_favicon) {
+            echo
+                '<link rel="icon" type="image/png" href="favicon.png" />' . "\n" .
+                '<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />' . "\n";
+        }
     }
 
     public static function adminPostFormItems($main, $sidebar, $post)

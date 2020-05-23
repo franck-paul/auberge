@@ -63,6 +63,7 @@ Exemple d'utilisation :
 ## Divers
 
 * Le module Entrée rapide n'est pas affiché pour les utilisateurs standards, hors admins et superadmin.
+* Le favicon std de l'admin est remplacé par l'affichage d'un favicon spécifique si option cochée (pref user / superadmin)
 * Un URL handler a été mis en place pour rediriger les archives mensuelles vers la page des archives globales, avec un accès direct au mois et année demandés.
 * Un module de tableau de bord est affiché en permanence avec :
   * Le pseudo utilisé (signature publique des textes) en titre du module
