@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Dotclear 2 auberge module\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-20 11:00+0200\n"
+"POT-Creation-Date: 2020-05-26 15:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,8 +19,17 @@ msgstr ""
 msgid "Room"
 msgstr "Chambre"
 
+msgid "Check-in"
+msgstr "Arrivée"
+
+msgid "Check-out"
+msgstr "Départ"
+
 msgid "Staff role"
 msgstr "Role"
+
+msgid "%Y-%m-%d"
+msgstr "%d-%m-%Y"
 
 msgid "Auberge"
 msgstr ""
@@ -39,6 +48,13 @@ msgstr "rôle"
 
 msgid "Used only for staff member."
 msgstr "utilisé uniquement pour les membres du personnel."
+
+msgid "Dates of stay are not yet known."
+msgstr "Dates de séjour pas encore connues."
+
+#, php-format
+msgid "Stay in the hostel from <strong>%s</strong> to <strong>%s</strong>"
+msgstr "Réside à l'auberge du <strong>%s</strong> au <strong>%s</strong>"
 
 #, php-format
 msgid "Welcome to the hostel %s!"
@@ -61,8 +77,12 @@ msgid "Your dates of stay are not yet known."
 msgstr "Vos dates de séjour ne sont pas encore connues."
 
 #, php-format
-msgid "The email you use for this game is: <strong>%s</strong> (it will be not published)."
-msgstr "L'email que vous utilisez pour le jeu est : <strong>%s</strong> (il ne sera pas publié)."
+msgid "You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>"
+msgstr "Vous résidez à l'auberge du <strong>%s</strong> au <strong>%s</strong>"
+
+#, php-format
+msgid "The email you use for this game is: <strong>%s</strong> (it will be known only to innkeepers)."
+msgstr "L'email que vous utilisez pour le jeu est : <strong>%s</strong> (il ne sera connu que des aubergistes)."
 
 #, php-format
 msgid "<a href=\"%s\">Contact the organizers of the game</a>"

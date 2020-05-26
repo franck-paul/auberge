@@ -24,8 +24,11 @@ try
 {
     // Database schema
     $s = new dbStruct($core->con, $core->prefix);
-    $s->user->room_id('integer', 0, true, 0);
-    $s->user->staff_role('varchar', 255, true, null);
+    $s->user
+        ->room_id('integer', 0, true, 0)
+        ->staff_role('varchar', 255, true, null)
+        ->check_in('timestamp', 0, false, 'now()')
+        ->check_out('timestamp', 0, false, 'now()');
 
     // Schema installation
     $si      = new dbStruct($core->con, $core->prefix);

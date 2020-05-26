@@ -75,11 +75,13 @@ class aubergeAdminBehaviors
             if (is_array($params['columns'])) {
                 $params['columns'][] = 'room_id';
                 $params['columns'][] = 'staff_role';
+                $params['columns'][] = 'check_in';
+                $params['columns'][] = 'check_out';
             } else {
-                $params['columns'] .= ',room_id,staff_role';
+                $params['columns'] .= ',room_id,staff_role,check_in,check_out';
             }
         } else {
-            $params['columns'] = ['room_id', 'staff_role'];
+            $params['columns'] = ['room_id', 'staff_role', 'check_in', 'check_out'];
         }
     }
 
@@ -91,6 +93,8 @@ class aubergeAdminBehaviors
     public static function adminUsersSortbyCombo($opt)
     {
         $opt[0][__('Room')] = 'room_id';
+        $opt[0][__('Check-in')] = 'check_in';
+        $opt[0][__('Check-out')] = 'check_out';
     }
 
     /**
@@ -102,8 +106,10 @@ class aubergeAdminBehaviors
      */
     public static function adminUserListHeader($core, $rs, $cols)
     {
-        $cols['room'] = '<th scope="col" class="nowrap">' . __('Room') . '</th>';
-        $cols['role'] = '<th scope="col" class="nowrap">' . __('Staff role') . '</th>';
+        $cols['room']      = '<th scope="col" class="nowrap">' . __('Room') . '</th>';
+        $cols['role']      = '<th scope="col" class="nowrap">' . __('Staff role') . '</th>';
+        $cols['check_in']  = '<th scope="col" class="nowrap">' . __('Check-in') . '</th>';
+        $cols['check_out'] = '<th scope="col" class="nowrap">' . __('Check-out') . '</th>';
     }
 
     /**
@@ -116,14 +122,20 @@ class aubergeAdminBehaviors
     public static function adminUserListValue($core, $rs, $cols)
     {
         if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
-            $room = $rs->room_id;
-            $role = $rs->staff_role;
+            $room      = $rs->room_id;
+            $role      = $rs->staff_role;
+            $check_in  = $rs->check_in;
+            $check_out = $rs->check_out;
         } else {
-            $room = aubergeData::getUserRoom($core, $rs->user_id);
-            $role = aubergeData::getUserStaffRole($core, $rs->user_id);
+            $room      = aubergeData::getUserRoom($core, $rs->user_id);
+            $role      = aubergeData::getUserStaffRole($core, $rs->user_id);
+            $check_in  = aubergeData::getUserCheckIn($core, $rs->user_id);
+            $check_out = aubergeData::getUserCheckOut($core, $rs->user_id);
         }
-        $cols['room'] = '<td class="nowrap count">' . ($room ?: '') . '</td>';
-        $cols['role'] = '<td class="nowrap">' . ($role ?: '') . '</td>';
+        $cols['room']      = '<td class="nowrap count">' . ($room ?: '') . '</td>';
+        $cols['role']      = '<td class="nowrap">' . ($role ?: '') . '</td>';
+        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
+        $cols['check_out'] = '<td class="nowrap">' . (strtotime($check_out) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_out) : '') . '</td>';
     }
 
     /**
@@ -136,11 +148,15 @@ class aubergeAdminBehaviors
         global $core;
 
         if ($rs instanceof record) {
-            $room = aubergeData::getUserRoom($core, $rs->user_id);
-            $role = aubergeData::getUserStaffRole($core, $rs->user_id);
+            $room      = aubergeData::getUserRoom($core, $rs->user_id);
+            $role      = aubergeData::getUserStaffRole($core, $rs->user_id);
+            $check_in  = aubergeData::getUserCheckIn($core, $rs->user_id);
+            $check_out = aubergeData::getUserCheckOut($core, $rs->user_id);
         } else {
-            $room = 0;
-            $role = '';
+            $room      = 0;
+            $role      = '';
+            $check_in  = 0;
+            $check_out = 0;
         }
 
         echo
@@ -160,8 +176,17 @@ class aubergeAdminBehaviors
             'autocomplete' => __('staff role')
         ]) .
         '</p>' .
-        '<p class="form-note">' . __('Used only for staff member.') . '</p>' .
-            '</div>';
+        '<p class="form-note">' . __('Used only for staff member.') . '</p>';
+
+        echo '<hr /><p>';
+        if (strtotime($check_in) <= 0 || strtotime($check_out) <= 0) {
+            echo __('Dates of stay are not yet known.');
+        } else {
+            echo sprintf(__('Stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
+                dt::dt2str(__('%A, %B %e %Y'), $check_in),
+                dt::dt2str(__('%A, %B %e %Y'), $check_out));
+        }
+        echo '</p></div>';
     }
 
     /**
@@ -219,11 +244,20 @@ class aubergeAdminBehaviors
             $ret .= '<p>' . __('No room assigned yet.') . '<br />';
         }
         // Stay dates
-        $ret .= __('Your dates of stay are not yet known.') . '</p>';
+        $check_in  = aubergeData::getUserCheckIn($core, $core->auth->userID());
+        $check_out = aubergeData::getUserCheckOut($core, $core->auth->userID());
+        if (strtotime($check_in) <= 0 || strtotime($check_out) <= 0) {
+            $ret .= __('Your dates of stay are not yet known.');
+        } else {
+            $ret .= sprintf(__('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
+                dt::dt2str(__('%A, %B %e %Y'), $check_in),
+                dt::dt2str(__('%A, %B %e %Y'), $check_out));
+        }
+        $ret .= '</p>';
 
         // User pseudo and email
         $info = sprintf(
-            __('The email you use for this game is: <strong>%s</strong> (it will be not published).'),
+            __('The email you use for this game is: <strong>%s</strong> (it will be known only to innkeepers).'),
             $core->auth->getInfo('user_email')
         );
         $ret .= '<p>' . $info . '</p>';
