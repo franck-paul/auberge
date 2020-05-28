@@ -113,4 +113,22 @@ class aubergeTpl
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : $core->blog->id)') . '; ?>';
     }
+
+    /*dtd
+    <!ELEMENT tpl:BlogNbEntriesFirstPage - O -- Number of entries for 1st page -->
+     */
+    public function BlogNbEntriesFirstPage($attr)
+    {
+        $f = $this->getFilters($attr);
+        return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_for_home') . '; ?>';
+    }
+
+    /*dtd
+    <!ELEMENT tpl:BlogNbEntriesPerPage - O -- Number of entries per page -->
+     */
+    public function BlogNbEntriesPerPage($attr)
+    {
+        $f = $this->getFilters($attr);
+        return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_per_page') . '; ?>';
+    }
 }

@@ -23,5 +23,11 @@ $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
 $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
 $core->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
 
+if (version_compare(DC_VERSION, '2.17-dev', '<')) {
+    // Add public template which are not yet in Dotclear (will be in next 2.17)
+    $core->tpl->addValue('BlogNbEntriesFirstPage', ['aubergeTpl', 'BlogNbEntriesFirstPage']);
+    $core->tpl->addValue('BlogNbEntriesPerPage', ['aubergeTpl', 'BlogNbEntriesPerPage']);
+}
+
 // Add URL handler for archives
 $core->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);
