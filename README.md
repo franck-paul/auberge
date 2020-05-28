@@ -60,6 +60,14 @@ Exemple d'utilisation :
 <link rel="stylesheet" type="text/css" href="{{tpl:BlogThemeURL}}/overwrite-{{tpl:BlogShortname}}.css" media="screen" />
 ```
 
+### {{tpl:BlogNbEntriesFirstPage}}
+
+Retourne le nombre de billets affichés sur la 1re page (paramètres du blog)
+
+### {{tpl:BlogNbEntriesPerPage}}
+
+Retourne le nombre de billets affichés sur les pages 2 et suivantes (paramètres du blog)
+
 ## Divers
 
 * Le module Entrée rapide n'est pas affiché pour les utilisateurs standards, hors admins et superadmin.

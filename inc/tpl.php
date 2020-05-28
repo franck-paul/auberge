@@ -119,7 +119,7 @@ class aubergeTpl
      */
     public function BlogNbEntriesFirstPage($attr)
     {
-        $f = $this->getFilters($attr);
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_for_home') . '; ?>';
     }
 
@@ -128,7 +128,7 @@ class aubergeTpl
      */
     public function BlogNbEntriesPerPage($attr)
     {
-        $f = $this->getFilters($attr);
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_per_page') . '; ?>';
     }
 }
