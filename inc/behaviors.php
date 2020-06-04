@@ -204,7 +204,7 @@ class aubergeAdminBehaviors
     public static function adminDashboardContents($core, $contents)
     {
         // Add modules to the contents stack
-        $forum_url = '#';
+        $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
         if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
             $contact_url = $core->url->getURLFor('contactme');
         } else {
