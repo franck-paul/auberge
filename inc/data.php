@@ -92,4 +92,27 @@ class aubergeData
 
         return $rs->check_out;
     }
+
+    /**
+     * Gets the user stays (JSON encoded in db).
+     *
+     * @param      <type>  $core     The core
+     * @param      <type>  $user_id  The user identifier
+     *
+     * @return     array  The user stays.
+     */
+    public static function getUserStays($core, $user_id)
+    {
+        $sql =
+        'SELECT U.stays ' .
+        'FROM ' . $core->prefix . 'user U ' .
+        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+
+        $rs = $core->con->select($sql);
+        if ($rs->stays) {
+            return json_decode($rs->stays, true);
+        }
+
+        return $rs->stays;
+    }
 }

@@ -27,8 +27,9 @@ try
     $s->user
         ->room_id('integer', 0, true, 0)
         ->staff_role('varchar', 255, true, null)
-        ->check_in('timestamp', 0, false, 'now()')
-        ->check_out('timestamp', 0, false, 'now()');
+        ->check_in('timestamp', 0, true, null)
+        ->check_out('timestamp', 0, true, null)
+        ->stays('text', 0, true, null);
 
     // Schema installation
     $si      = new dbStruct($core->con, $core->prefix);

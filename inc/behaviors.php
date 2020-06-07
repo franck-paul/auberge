@@ -212,17 +212,6 @@ class aubergeAdminBehaviors
             $contact_url = $core->blog->getQmarkURL() . 'contact';
         }
 
-        // Get user info
-        $room_id    = aubergeData::getUserRoom($core, $core->auth->userID());
-        $staff_role = aubergeData::getUserStaffRole($core, $core->auth->userID());
-        $is_staff   = false;
-        if ($room_id > 0 && $room_id < 1000) {
-            // Single resident
-        } elseif ($room_id >= 1000) {
-            $is_staff = true;
-            $room_id -= 999;
-        }
-
         // Compose module content
         $ret = '<div id="auberge" class="box badgeable">';
 
@@ -232,27 +221,42 @@ class aubergeAdminBehaviors
         $ret .= '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
         sprintf($title, $core->auth->getInfo('user_displayname')) . '</h3>';
 
-        // Room number
-        if ($room_id > 0) {
-            $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
-            $ret .= '<p>' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
-            sprintf('%d', $room_id) . '</strong><br />';
-            if ($staff_role) {
-                $ret .= sprintf(__('Your staff position is: <strong>%s</strong>'), $staff_role) . '<br />';
+        // Stays
+        $stays = aubergeData::getUserStays($core, $core->auth->userID());
+        if ($stays) {
+            foreach ($stays as $stay) {
+                $check_in = $stay['check_in'];
+                $check_out = $stay['check_out'];
+                $room_id = $stay['room_id'];
+                $position = $stay['position'];
+
+                $is_staff   = false;
+                if ($room_id > 0 && $room_id < 1000) {
+                    // Single resident
+                } elseif ($room_id >= 1000) {
+                    $is_staff = true;
+                    $room_id -= 999;
+                }
+                $ret .= '<p>';
+                $ret .= sprintf(__('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
+                    dt::dt2str(__('%A, %B %e %Y'), $check_in),
+                    dt::dt2str(__('%A, %B %e %Y'), $check_out));
+                if ($room_id > 0) {
+                    $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
+                    $ret .= '<br />' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
+                    sprintf('%d', $room_id) . '</strong><br />';
+                    if ($is_staff && $position) {
+                        $ret .= sprintf(__('Your staff position is: <strong>%s</strong>'), $position);
+                    }
+                } else {
+                    $ret .= __('No room assigned yet.');
+                }
+                $ret .= '</p>';
             }
         } else {
-            $ret .= '<p>' . __('No room assigned yet.') . '<br />';
-        }
-        // Stay dates
-        $check_in  = aubergeData::getUserCheckIn($core, $core->auth->userID());
-        $check_out = aubergeData::getUserCheckOut($core, $core->auth->userID());
-        if (strtotime($check_in) <= 0 || strtotime($check_out) <= 0) {
             $ret .= __('Your dates of stay are not yet known.');
-        } else {
-            $ret .= sprintf(__('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
-                dt::dt2str(__('%A, %B %e %Y'), $check_in),
-                dt::dt2str(__('%A, %B %e %Y'), $check_out));
         }
+
         $ret .= '</p>';
 
         // User pseudo and email
