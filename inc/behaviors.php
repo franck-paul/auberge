@@ -206,10 +206,10 @@ class aubergeAdminBehaviors
         // Add modules to the contents stack
         $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
         if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
-            $contact_url = $core->url->getURLFor('contactme');
+            $contact_url = $core->blog->url . $core->url->getURLFor('contactme');
         } else {
-            // URL is not available in dashboard for non-admin
-            $contact_url = $core->blog->getQmarkURL() . 'contact';
+            // URL is not available in dashboard for non-admin, so ugly code !!!
+            $contact_url = $core->blog->url . 'contact';
         }
 
         // Compose module content
