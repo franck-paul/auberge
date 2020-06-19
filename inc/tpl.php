@@ -27,8 +27,9 @@ class aubergeTpl
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         $role = isset($attr['role']);
         return '<?php '. "\n" .
-            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->posts->user_id);' . "\n" .
-            '$_ctx->staff_role = aubergeData::getUserStaffRole($core, $_ctx->posts->user_id);' . "\n" .
+            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
+            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id);' . "\n" .
+            '$_ctx->staff_role = aubergeData::getUserStaffRole($core, $_ctx->player_id);' . "\n" .
             '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
             'if ($_ctx->is_staff) {' . "\n" .
             '  if (' . ($role ? 'true' : 'false') . ' && $_ctx->staff_role) {' . "\n" .
@@ -59,7 +60,8 @@ class aubergeTpl
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php '. "\n" .
-            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->posts->user_id);' . "\n" .
+            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
+            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id);' . "\n" .
             '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
             'if ($_ctx->is_staff) {' . "\n" .
             '  $cls = sprintf(\'staff staff_%s\', $_ctx->room_id - 999);' . "\n" .
@@ -71,6 +73,96 @@ class aubergeTpl
             '  }' . "\n" .
             '}' . "\n" .
             'echo ' . sprintf($f, '$cls') . '; ?>';
+    }
+
+    /**
+     * Template code for author stays
+     *
+     * @param      <type>  $attr   The attribute
+     *
+     * @return     string  ( description_of_the_return_value )
+     */
+    public static function AuthorCheckStays($attr)
+    {
+        if (!empty($attr['format'])) {
+            $format = addslashes($attr['format']);
+        } else {
+            $format = $GLOBALS['core']->blog->settings->system->date_format;
+        }
+
+        $list = !empty($attr['list']) ? $attr['list'] : __('<div>%s</div>');
+        $item = !empty($attr['item']) ? $attr['item'] : __('<p>From %1$s to %2$s %3$s</p>');
+        $staff = !empty($attr['staff']) ? $attr['staff'] : __('as %s');
+        $room = !empty($attr['room']) ? $attr['room'] : __('in room %s');
+
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
+
+        return '<?php '. "\n" .
+            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
+            '$_ctx->stays = aubergeData::getUserStays($core, $_ctx->player_id);' . "\n" .
+            '$ret = "";' . "\n" .
+            'if ($_ctx->stays) {' . "\n" .
+            '  foreach($_ctx->stays as $_ctx->stay) {' . "\n" .
+            '    if ($_ctx->stay[\'room_id\'] > 999) {' . "\n" .
+            '      $info = sprintf(\'' . addslashes($staff) . '\', $_ctx->stay[\'position\']);' . "\n" .
+            '    } else {' . "\n" .
+            '      $info = sprintf(\'' . addslashes($room) . '\', $_ctx->stay[\'room_id\']);' . "\n" .
+            '    }' . "\n" .
+            '    $ret .= sprintf(' . "\n" .
+            '      \'' . addslashes($item) . '\',' . "\n" .
+            '      dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_in\']),' . "\n" .
+            '      dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_out\']),' . "\n" .
+            '      $info' . "\n" .
+            '    );' . "\n" .
+            '  }' . "\n" .
+            '  echo ' . sprintf($f, 'sprintf(\'' . addslashes($list) . '\', $ret)') .';' . "\n" .
+            '} ?>';
+    }
+
+    /**
+     * Template code for author check-in
+     *
+     * @param      <type>  $attr   The attribute
+     *
+     * @return     string  ( description_of_the_return_value )
+     */
+    public static function AuthorCheckIn($attr)
+    {
+        if (!empty($attr['format'])) {
+            $format = addslashes($attr['format']);
+        } else {
+            $format = $GLOBALS['core']->blog->settings->system->date_format;
+        }
+
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
+
+        return '<?php '. "\n" .
+            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
+            '$_ctx->check_in = aubergeData::getUserCheckIn($core, $_ctx->player_id);' . "\n" .
+            'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', $_ctx->check_in)') . '; ?>';
+    }
+
+    /**
+     * Template code for author check-out
+     *
+     * @param      <type>  $attr   The attribute
+     *
+     * @return     string  ( description_of_the_return_value )
+     */
+    public static function AuthorCheckOut($attr)
+    {
+        if (!empty($attr['format'])) {
+            $format = addslashes($attr['format']);
+        } else {
+            $format = $GLOBALS['core']->blog->settings->system->date_format;
+        }
+
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
+
+        return '<?php '. "\n" .
+            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
+            '$_ctx->check_out = aubergeData::getUserCheckOut($core, $_ctx->player_id);' . "\n" .
+            'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', $_ctx->check_out)') . '; ?>';
     }
 
     /*dtd

@@ -19,6 +19,9 @@ $core->addBehavior('coreBlogGetComments', ['aubergePublicBehaviors', 'coreBlogGe
 // Public template tags
 $core->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
 $core->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
+$core->tpl->addValue('AuthorCheckIn', ['aubergeTpl', 'authorCheckIn']);
+$core->tpl->addValue('AuthorCheckOut', ['aubergeTpl', 'AuthorCheckOut']);
+$core->tpl->addValue('AuthorCheckStays', ['aubergeTpl', 'AuthorCheckStays']);
 $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
 $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
 $core->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
