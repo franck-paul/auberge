@@ -32,5 +32,8 @@ if (version_compare(DC_VERSION, '2.17-dev', '<')) {
     $core->tpl->addValue('BlogNbEntriesPerPage', ['aubergeTpl', 'BlogNbEntriesPerPage']);
 }
 
+// Public template tags attribute
+$core->addBehavior('publicBeforeContentFilter', ['aubergeTpl', 'publicBeforeContentFilter']);
+
 // Add URL handler for archives
 $core->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);

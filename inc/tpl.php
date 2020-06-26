@@ -14,6 +14,23 @@
 class aubergeTpl
 {
     /**
+     * Cope with no_first_aside attribute
+     *
+     * @param      <type>  $core   The core
+     * @param      <type>  $tag    The tag
+     * @param      <type>  $args   The arguments
+     */
+    public static function publicBeforeContentFilter($core, $tag, $args)
+    {
+        if (isset($args['no_first_aside']) && (integer) $args['no_first_aside'] > 0) {
+            if (strpos($args[0], '<aside>') === 0) {
+                // Remove first aside if exists at beginning of string
+                $args[0] = preg_replace('/<aside>(.*)?<\/aside>/msU', '', $args[0], 1);
+            }
+        }
+    }
+
+    /**
      * Template code for author room
      * Authors (in room) → room id from 1 to 999
      * Staff members → room id > 1000
@@ -171,7 +188,7 @@ class aubergeTpl
     return    CDATA    #IMPLIED    -- value to display in case of success (default: even)
     >
      */
-    public function CommentIfEven($attr)
+    public static function CommentIfEven($attr)
     {
         $ret = isset($attr['return']) ? $attr['return'] : 'even';
         $ret = html::escapeHTML($ret);
@@ -187,7 +204,7 @@ class aubergeTpl
     return    CDATA    #IMPLIED    -- value to display in case of success (default: even)
     >
      */
-    public function PingIfEven($attr)
+    public static function PingIfEven($attr)
     {
         $ret = isset($attr['return']) ? $attr['return'] : 'even';
         $ret = html::escapeHTML($ret);
@@ -200,7 +217,7 @@ class aubergeTpl
     /*dtd
     <!ELEMENT tpl:BlogShortname - 0 -- Blog ID -->
      */
-    public function BlogShortname($attr)
+    public static function BlogShortname($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : $core->blog->id)') . '; ?>';
@@ -209,7 +226,7 @@ class aubergeTpl
     /*dtd
     <!ELEMENT tpl:BlogNbEntriesFirstPage - O -- Number of entries for 1st page -->
      */
-    public function BlogNbEntriesFirstPage($attr)
+    public static function BlogNbEntriesFirstPage($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_for_home') . '; ?>';
@@ -218,7 +235,7 @@ class aubergeTpl
     /*dtd
     <!ELEMENT tpl:BlogNbEntriesPerPage - O -- Number of entries per page -->
      */
-    public function BlogNbEntriesPerPage($attr)
+    public static function BlogNbEntriesPerPage($attr)
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_per_page') . '; ?>';
