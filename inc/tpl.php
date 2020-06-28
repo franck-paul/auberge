@@ -121,7 +121,7 @@ class aubergeTpl
             'if ($_ctx->stays) {' . "\n" .
             '  foreach($_ctx->stays as $_ctx->stay) {' . "\n" .
             '    if ($_ctx->stay[\'room_id\'] > 999) {' . "\n" .
-            '      $info = sprintf(\'' . addslashes($staff) . '\', $_ctx->stay[\'position\']);' . "\n" .
+            '      $info = sprintf(\'' . addslashes($staff) . '\', auberge:utils::getIdPosition($_ctx->player_id, $_ctx->stay[\'position\']));' . "\n" .
             '    } else {' . "\n" .
             '      $info = sprintf(\'' . addslashes($room) . '\', $_ctx->stay[\'room_id\']);' . "\n" .
             '    }' . "\n" .
@@ -239,5 +239,11 @@ class aubergeTpl
     {
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_per_page') . '; ?>';
+    }
+
+    public static function TagLabel($attr)
+    {
+        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        return '<?php echo ' . sprintf($f, 'aubergeUtils::getTagLabel($_ctx->meta->meta_id)') . '; ?>';
     }
 }

@@ -23,6 +23,13 @@ class aubergeAdminBehaviors
         echo
         dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin.css')), 'screen', $core->getVersion('auberge'));
 
+        if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
+        } else {
+            // Ajout feuille de style spécifique non admin
+            echo
+            dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin-usage.css')), 'screen', $core->getVersion('auberge'));
+        }
+
         // Ajout favicon spécifique
         if ($core->auth->user_prefs->interface->hide_std_favicon) {
             echo
@@ -228,7 +235,7 @@ class aubergeAdminBehaviors
                 $check_in = $stay['check_in'];
                 $check_out = $stay['check_out'];
                 $room_id = $stay['room_id'];
-                $position = $stay['position'];
+                $position = aubergeUtils::getIdPosition($core->auth->userID(), $stay['position']);
 
                 $is_staff   = false;
                 if ($room_id > 0 && $room_id < 1000) {

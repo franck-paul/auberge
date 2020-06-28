@@ -68,6 +68,31 @@ Retourne le nombre de billets affichés sur la 1re page (paramètres du blog)
 
 Retourne le nombre de billets affichés sur les pages 2 et suivantes (paramètres du blog)
 
+### {{tpl:TagLabel}}
+
+Retourne le libellé associé à un tag si présent dans le fichier ``/var/blogs/auberge/tags.json``, sinon renvoie le tag lui-même.
+
+Exemple de fichier de libellé :
+
+```json
+{
+    "contrainte-s01": "Abécédaire",
+    "contrainte-s02": "Pas de 1re personne du singulier"
+}
+```
+
+## Positions spécifiques
+
+Si le fichier ``/var/blogs/auberge/positions.json`` existe et si l'utilisateur courant y est défini, sa position par défaut est remplacée par celle définie dans ce fichier. Valable côté administration et côté public.
+
+Exemple de fichier de positions :
+
+```json
+{
+    "jeanne-lalochere": "La petite patronne"
+}
+```
+
 ## Divers
 
 * Le module Entrée rapide n'est pas affiché pour les utilisateurs standards, hors admins et superadmin.

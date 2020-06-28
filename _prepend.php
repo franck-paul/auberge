@@ -20,6 +20,7 @@ $__autoload['aubergeUrlHandlers']        = dirname(__FILE__) . '/inc/behaviors.p
 $__autoload['rsAubergeExtCommentPublic'] = dirname(__FILE__) . '/inc/behaviors.php';
 $__autoload['aubergeTpl']                = dirname(__FILE__) . '/inc/tpl.php';
 $__autoload['aubergeData']               = dirname(__FILE__) . '/inc/data.php';
+$__autoload['aubergeUtils']              = dirname(__FILE__) . '/inc/utils.php';
 
 if (!defined('DC_CONTEXT_ADMIN')) {return false;}
 

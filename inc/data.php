@@ -50,7 +50,7 @@ class aubergeData
 
         $rs = $core->con->select($sql);
 
-        return $rs->staff_role;
+        return aubergeUtils::getIdPosition($user_id ,$rs->staff_role);
     }
 
     /**

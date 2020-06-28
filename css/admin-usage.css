@@ -1,0 +1,7 @@
+.expand p:last-child {
+  display: none;
+}
+
+#comment-form h3 + p + p {
+  display: none;
+}

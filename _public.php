@@ -25,6 +25,7 @@ $core->tpl->addValue('AuthorCheckStays', ['aubergeTpl', 'AuthorCheckStays']);
 $core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
 $core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
 $core->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
+$core->tpl->addValue('TagLabel', ['aubergeTpl', 'TagLabel']);
 
 if (version_compare(DC_VERSION, '2.17-dev', '<')) {
     // Add public template which are not yet in Dotclear (will be in next 2.17)
