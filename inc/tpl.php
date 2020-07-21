@@ -125,12 +125,14 @@ class aubergeTpl
             '    } else {' . "\n" .
             '      $info = sprintf(\'' . addslashes($room) . '\', $_ctx->stay[\'room_id\']);' . "\n" .
             '    }' . "\n" .
-            '    $ret .= sprintf(' . "\n" .
-            '      \'' . addslashes($item) . '\',' . "\n" .
-            '      dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_in\']),' . "\n" .
-            '      dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_out\']),' . "\n" .
-            '      $info' . "\n" .
-            '    );' . "\n" .
+            '    if (strtotime($_ctx->stay[\'check_in\']) <= time()) {' . "\n" .
+            '      $ret .= sprintf(' . "\n" .
+            '        \'' . addslashes($item) . '\',' . "\n" .
+            '        dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_in\']),' . "\n" .
+            '        dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_out\']),' . "\n" .
+            '        $info' . "\n" .
+            '      );' . "\n" .
+            '    }' . "\n" .
             '  }' . "\n" .
             '  echo ' . sprintf($f, 'sprintf(\'' . addslashes($list) . '\', $ret)') .';' . "\n" .
             '} ?>';
