@@ -45,8 +45,9 @@ class aubergeTpl
         $role = isset($attr['role']);
         return '<?php '. "\n" .
             '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id);' . "\n" .
-            '$_ctx->staff_role = aubergeData::getUserStaffRole($core, $_ctx->player_id);' . "\n" .
+            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
+            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id, $dt);' . "\n" .
+            '$_ctx->staff_role = aubergeData::getUserStaffRole($core, $_ctx->player_id, $dt);' . "\n" .
             '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
             'if ($_ctx->is_staff) {' . "\n" .
             '  if (' . ($role ? 'true' : 'false') . ' && $_ctx->staff_role) {' . "\n" .
@@ -78,7 +79,8 @@ class aubergeTpl
         $f = $GLOBALS['core']->tpl->getFilters($attr);
         return '<?php '. "\n" .
             '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id);' . "\n" .
+            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
+            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id, $dt);' . "\n" .
             '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
             'if ($_ctx->is_staff) {' . "\n" .
             '  $cls = sprintf(\'staff staff_%s\', $_ctx->room_id - 999);' . "\n" .
@@ -157,7 +159,8 @@ class aubergeTpl
 
         return '<?php '. "\n" .
             '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$_ctx->check_in = aubergeData::getUserCheckIn($core, $_ctx->player_id);' . "\n" .
+            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
+            '$_ctx->check_in = aubergeData::getUserCheckIn($core, $_ctx->player_id, $dt);' . "\n" .
             'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', $_ctx->check_in)') . '; ?>';
     }
 
@@ -180,7 +183,8 @@ class aubergeTpl
 
         return '<?php '. "\n" .
             '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$_ctx->check_out = aubergeData::getUserCheckOut($core, $_ctx->player_id);' . "\n" .
+            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
+            '$_ctx->check_out = aubergeData::getUserCheckOut($core, $_ctx->player_id, $dt);' . "\n" .
             'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', $_ctx->check_out)') . '; ?>';
     }
 

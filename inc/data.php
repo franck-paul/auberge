@@ -13,6 +13,26 @@
 
 class aubergeData
 {
+    private static function getStay($core, $user_id, $dt)
+    {
+        if ($dt === null) {
+            return false;
+        }
+
+        $stays = self::getUserStays($core, $user_id);
+        if (is_array($stays) && count($stays)) {
+            foreach ($stays as $stay) {
+                if ($dt <= $stay['check_out']) {
+                    return $stay;
+                }
+            }
+            // Out of last stay, return it
+            return $stays[count($stays) - 1];
+        }
+
+        return false;
+    }
+
     /**
      * Gets the user room.
      *
@@ -21,8 +41,15 @@ class aubergeData
      *
      * @return     <type>  The user room.
      */
-    public static function getUserRoom($core, $user_id)
+    public static function getUserRoom($core, $user_id, $dt = null)
     {
+        if ($dt !== null) {
+            $stay = self::getStay($core, $user_id, $dt);
+            if ($stay !== false) {
+                return $stay['room_id'];
+            }
+        }
+
         $sql =
         'SELECT U.room_id ' .
         'FROM ' . $core->prefix . 'user U ' .
@@ -41,8 +68,15 @@ class aubergeData
      *
      * @return     <type>  The user staff role.
      */
-    public static function getUserStaffRole($core, $user_id)
+    public static function getUserStaffRole($core, $user_id, $dt = null)
     {
+        if ($dt !== null) {
+            $stay = self::getStay($core, $user_id, $dt);
+            if ($stay !== false) {
+                return $stay['position'];
+            }
+        }
+
         $sql =
         'SELECT U.staff_role ' .
         'FROM ' . $core->prefix . 'user U ' .
@@ -61,8 +95,15 @@ class aubergeData
      *
      * @return     <type>  The user check-in date.
      */
-    public static function getUserCheckIn($core, $user_id)
+    public static function getUserCheckIn($core, $user_id, $dt = null)
     {
+        if ($dt !== null) {
+            $stay = self::getStay($core, $user_id, $dt);
+            if ($stay !== false) {
+                return $stay['check_in'];
+            }
+        }
+
         $sql =
         'SELECT U.check_in ' .
         'FROM ' . $core->prefix . 'user U ' .
@@ -81,8 +122,15 @@ class aubergeData
      *
      * @return     <type>  The user check-out date.
      */
-    public static function getUserCheckOut($core, $user_id)
+    public static function getUserCheckOut($core, $user_id, $dt = null)
     {
+        if ($dt !== null) {
+            $stay = self::getStay($core, $user_id, $dt);
+            if ($stay !== false) {
+                return $stay['check_out'];
+            }
+        }
+
         $sql =
         'SELECT U.check_out ' .
         'FROM ' . $core->prefix . 'user U ' .
