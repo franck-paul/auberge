@@ -73,7 +73,7 @@ class aubergeData
         if ($dt !== null) {
             $stay = self::getStay($core, $user_id, $dt);
             if ($stay !== false) {
-                return $stay['position'];
+                return aubergeUtils::getIdPosition($user_id ,$stay['position']);
             }
         }
 
