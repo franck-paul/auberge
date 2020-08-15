@@ -22,7 +22,10 @@ class aubergeData
         $stays = self::getUserStays($core, $user_id);
         if (is_array($stays) && count($stays)) {
             foreach ($stays as $stay) {
-                if ($dt <= $stay['check_out']) {
+                $dt = date('Y-m-d H:i:00', strtotime($dt));
+                // Limit of stay is the day after check_out + 11 hours
+                $limit = date('Y-m-d H:i:00', strtotime($stay['check_out']) + (35 * 60 * 60));
+                if ($dt <= $limit) {
                     return $stay;
                 }
             }
