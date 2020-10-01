@@ -161,7 +161,9 @@ class aubergeData
 
         $rs = $core->con->select($sql);
         if ($rs->stays) {
-            return json_decode($rs->stays, true);
+            $list = json_decode($rs->stays, true);
+            usort($list, function ($a, $b) { return ($a['check_out'] > $b['check_out']); });
+            return $list;
         }
 
         return $rs->stays;

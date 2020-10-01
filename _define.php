@@ -17,7 +17,7 @@ $this->registerModule(
     "Auberge des blogueurs",  // Name
     "Des vis et des boulons", // Description
     "Franck Paul",            // Author
-    '0.17.2',                 // Version
+    '0.17.3',                 // Version
     [
         'requires'    => [['core', '2.16']],   // Requirements
         'permissions' => 'usage,contentadmin', // Permissions
