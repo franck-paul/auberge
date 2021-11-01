@@ -29,6 +29,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=auberge',       // Details URL
         'support'    => 'https://github.com/franck-paul/auberge', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/auberge/main/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/auberge/master/dcstore.xml'
     ]
 );
