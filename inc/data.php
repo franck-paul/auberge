@@ -10,7 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
 class aubergeData
 {
     private static function getStay($core, $user_id, $dt)
@@ -19,7 +18,7 @@ class aubergeData
             return false;
         }
 
-        $stays = self::getUserStays($core, $user_id);
+        $stays = self::getUserStays(dcCore::app(), $user_id);
         if (is_array($stays) && count($stays)) {
             foreach ($stays as $stay) {
                 $dt = date('Y-m-d H:i:00', strtotime($dt));
@@ -47,18 +46,17 @@ class aubergeData
     public static function getUserRoom($core, $user_id, $dt = null)
     {
         if ($dt !== null) {
-            $stay = self::getStay($core, $user_id, $dt);
+            $stay = self::getStay(dcCore::app(), $user_id, $dt);
             if ($stay !== false) {
                 return $stay['room_id'];
             }
         }
 
-        $sql =
-        'SELECT U.room_id ' .
-        'FROM ' . $core->prefix . 'user U ' .
-        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+        $sql = 'SELECT U.room_id ' .
+        'FROM ' . dcCore::app()->prefix . 'user U ' .
+        "WHERE U.user_id = '" . dcCore::app()->con->escape($user_id) . "' ";
 
-        $rs = $core->con->select($sql);
+        $rs = dcCore::app()->con->select($sql);
 
         return $rs->room_id;
     }
@@ -74,20 +72,19 @@ class aubergeData
     public static function getUserStaffRole($core, $user_id, $dt = null)
     {
         if ($dt !== null) {
-            $stay = self::getStay($core, $user_id, $dt);
+            $stay = self::getStay(dcCore::app(), $user_id, $dt);
             if ($stay !== false) {
-                return aubergeUtils::getIdPosition($user_id ,$stay['position']);
+                return aubergeUtils::getIdPosition($user_id, $stay['position']);
             }
         }
 
-        $sql =
-        'SELECT U.staff_role ' .
-        'FROM ' . $core->prefix . 'user U ' .
-        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+        $sql = 'SELECT U.staff_role ' .
+        'FROM ' . dcCore::app()->prefix . 'user U ' .
+        "WHERE U.user_id = '" . dcCore::app()->con->escape($user_id) . "' ";
 
-        $rs = $core->con->select($sql);
+        $rs = dcCore::app()->con->select($sql);
 
-        return aubergeUtils::getIdPosition($user_id ,$rs->staff_role);
+        return aubergeUtils::getIdPosition($user_id, $rs->staff_role);
     }
 
     /**
@@ -101,18 +98,17 @@ class aubergeData
     public static function getUserCheckIn($core, $user_id, $dt = null)
     {
         if ($dt !== null) {
-            $stay = self::getStay($core, $user_id, $dt);
+            $stay = self::getStay(dcCore::app(), $user_id, $dt);
             if ($stay !== false) {
                 return $stay['check_in'];
             }
         }
 
-        $sql =
-        'SELECT U.check_in ' .
-        'FROM ' . $core->prefix . 'user U ' .
-        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+        $sql = 'SELECT U.check_in ' .
+        'FROM ' . dcCore::app()->prefix . 'user U ' .
+        "WHERE U.user_id = '" . dcCore::app()->con->escape($user_id) . "' ";
 
-        $rs = $core->con->select($sql);
+        $rs = dcCore::app()->con->select($sql);
 
         return $rs->check_in;
     }
@@ -128,18 +124,17 @@ class aubergeData
     public static function getUserCheckOut($core, $user_id, $dt = null)
     {
         if ($dt !== null) {
-            $stay = self::getStay($core, $user_id, $dt);
+            $stay = self::getStay(dcCore::app(), $user_id, $dt);
             if ($stay !== false) {
                 return $stay['check_out'];
             }
         }
 
-        $sql =
-        'SELECT U.check_out ' .
-        'FROM ' . $core->prefix . 'user U ' .
-        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+        $sql = 'SELECT U.check_out ' .
+        'FROM ' . dcCore::app()->prefix . 'user U ' .
+        "WHERE U.user_id = '" . dcCore::app()->con->escape($user_id) . "' ";
 
-        $rs = $core->con->select($sql);
+        $rs = dcCore::app()->con->select($sql);
 
         return $rs->check_out;
     }
@@ -154,15 +149,15 @@ class aubergeData
      */
     public static function getUserStays($core, $user_id)
     {
-        $sql =
-        'SELECT U.stays ' .
-        'FROM ' . $core->prefix . 'user U ' .
-        "WHERE U.user_id = '" . $core->con->escape($user_id) . "' ";
+        $sql = 'SELECT U.stays ' .
+        'FROM ' . dcCore::app()->prefix . 'user U ' .
+        "WHERE U.user_id = '" . dcCore::app()->con->escape($user_id) . "' ";
 
-        $rs = $core->con->select($sql);
+        $rs = dcCore::app()->con->select($sql);
         if ($rs->stays) {
             $list = json_decode($rs->stays, true);
-            usort($list, function ($a, $b) { return ($a['check_out'] > $b['check_out']); });
+            usort($list, fn ($a, $b) => ($a['check_out'] > $b['check_out']));
+
             return $list;
         }
 

@@ -18,9 +18,9 @@ $this->registerModule(
     'Auberge des blogueurs',  // Name
     'Des vis et des boulons', // Description
     'Franck Paul',            // Author
-    '0.17.3',                 // Version
+    '0.18',
     [
-        'requires'    => [['core', '2.16']],   // Requirements
+        'requires'    => [['core', '2.23']],   // Requirements
         'permissions' => 'usage,contentadmin', // Permissions
         'type'        => 'plugin',             // Type
         'priority'    => 1500,                 // Priority
@@ -29,6 +29,6 @@ $this->registerModule(
 
         'details'    => 'https://open-time.net/?q=auberge',       // Details URL
         'support'    => 'https://github.com/franck-paul/auberge', // Support URL
-        'repository' => 'https://raw.githubusercontent.com/franck-paul/auberge/master/dcstore.xml'
+        'repository' => 'https://raw.githubusercontent.com/franck-paul/auberge/master/dcstore.xml',
     ]
 );

@@ -10,7 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
 class aubergeUtils
 {
     private static $loaded = false;
@@ -56,6 +55,7 @@ class aubergeUtils
         if (isset(self::$tag_labels[$tag])) {
             return self::$tag_labels[$tag];
         }
+
         return $tag;
     }
 
@@ -65,6 +65,7 @@ class aubergeUtils
         if (isset(self::$id_positions[$id])) {
             return self::$id_positions[$id];
         }
+
         return $default;
     }
 }

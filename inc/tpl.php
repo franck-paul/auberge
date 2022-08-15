@@ -10,7 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
 class aubergeTpl
 {
     /**
@@ -22,7 +21,7 @@ class aubergeTpl
      */
     public static function publicBeforeContentFilter($core, $tag, $args)
     {
-        if (isset($args['no_first_aside']) && (integer) $args['no_first_aside'] > 0) {
+        if (isset($args['no_first_aside']) && (int) $args['no_first_aside'] > 0) {
             if (strpos($args[0], '<aside>') === 0) {
                 // Remove first aside if exists at beginning of string
                 $args[0] = preg_replace('/<aside>(.*)?<\/aside>/msU', '', $args[0], 1);
@@ -41,23 +40,24 @@ class aubergeTpl
      */
     public static function AuthorRoom($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f    = dcCore::app()->tpl->getFilters($attr);
         $role = isset($attr['role']);
-        return '<?php '. "\n" .
-            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
-            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id, $dt);' . "\n" .
-            '$_ctx->staff_role = aubergeData::getUserStaffRole($core, $_ctx->player_id, $dt);' . "\n" .
-            '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
-            'if ($_ctx->is_staff) {' . "\n" .
-            '  if (' . ($role ? 'true' : 'false') . ' && $_ctx->staff_role) {' . "\n" .
-            '    $tmp = $_ctx->staff_role;' . "\n" .
+
+        return '<?php ' . "\n" .
+            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
+            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
+            'dcCore::app()->ctx->room_id = aubergeData::getUserRoom(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
+            'dcCore::app()->ctx->staff_role = aubergeData::getUserStaffRole(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
+            'dcCore::app()->ctx->is_staff = (dcCore::app()->ctx->room_id > 999);' . "\n" .
+            'if (dcCore::app()->ctx->is_staff) {' . "\n" .
+            '  if (' . ($role ? 'true' : 'false') . ' && dcCore::app()->ctx->staff_role) {' . "\n" .
+            '    $tmp = dcCore::app()->ctx->staff_role;' . "\n" .
             '  } else {' . "\n" .
-            '    $tmp = ($_ctx->archives ? \'' . __('Staff') . '\' : \'' . __('Staff member') . '\');' . "\n" .
+            '    $tmp = (dcCore::app()->ctx->archives ? \'' . __('Staff') . '\' : \'' . __('Staff member') . '\');' . "\n" .
             '  }' . "\n" .
             '} else {' . "\n" .
-            '  if ($_ctx->room_id) {' . "\n" .
-            '      $tmp = sprintf(\'' . __('Room %s') . '\', $_ctx->room_id);' . "\n" .
+            '  if (dcCore::app()->ctx->room_id) {' . "\n" .
+            '      $tmp = sprintf(\'' . __('Room %s') . '\', dcCore::app()->ctx->room_id);' . "\n" .
             '  } else {' . "\n" .
             '      $tmp = \'\';' . "\n" .
             '  }' . "\n" .
@@ -76,17 +76,18 @@ class aubergeTpl
      */
     public static function AuthorRoomClass($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
-        return '<?php '. "\n" .
-            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
-            '$_ctx->room_id = aubergeData::getUserRoom($core, $_ctx->player_id, $dt);' . "\n" .
-            '$_ctx->is_staff = ($_ctx->room_id > 999);' . "\n" .
-            'if ($_ctx->is_staff) {' . "\n" .
-            '  $cls = sprintf(\'staff staff_%s\', $_ctx->room_id - 999);' . "\n" .
+        $f = dcCore::app()->tpl->getFilters($attr);
+
+        return '<?php ' . "\n" .
+            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
+            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
+            'dcCore::app()->ctx->room_id = aubergeData::getUserRoom(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
+            'dcCore::app()->ctx->is_staff = (dcCore::app()->ctx->room_id > 999);' . "\n" .
+            'if (dcCore::app()->ctx->is_staff) {' . "\n" .
+            '  $cls = sprintf(\'staff staff_%s\', dcCore::app()->ctx->room_id - 999);' . "\n" .
             '} else {' . "\n" .
-            '  if ($_ctx->room_id) {' . "\n" .
-            '    $cls = sprintf(\'room room_%s\', $_ctx->room_id);' . "\n" .
+            '  if (dcCore::app()->ctx->room_id) {' . "\n" .
+            '    $cls = sprintf(\'room room_%s\', dcCore::app()->ctx->room_id);' . "\n" .
             '  } else {' . "\n" .
             '    $cls = \'\';' . "\n" .
             '  }' . "\n" .
@@ -106,37 +107,37 @@ class aubergeTpl
         if (!empty($attr['format'])) {
             $format = addslashes($attr['format']);
         } else {
-            $format = $GLOBALS['core']->blog->settings->system->date_format;
+            $format = dcCore::app()->blog->settings->system->date_format;
         }
 
-        $list = !empty($attr['list']) ? $attr['list'] : __('<div>%s</div>');
-        $item = !empty($attr['item']) ? $attr['item'] : __('<p>From %1$s to %2$s %3$s</p>');
+        $list  = !empty($attr['list']) ? $attr['list'] : __('<div>%s</div>');
+        $item  = !empty($attr['item']) ? $attr['item'] : __('<p>From %1$s to %2$s %3$s</p>');
         $staff = !empty($attr['staff']) ? $attr['staff'] : __('as %s');
-        $room = !empty($attr['room']) ? $attr['room'] : __('in room %s');
+        $room  = !empty($attr['room']) ? $attr['room'] : __('in room %s');
 
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php '. "\n" .
-            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$_ctx->stays = aubergeData::getUserStays($core, $_ctx->player_id);' . "\n" .
+        return '<?php ' . "\n" .
+            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
+            'dcCore::app()->ctx->stays = aubergeData::getUserStays(dcCore::app(), dcCore::app()->ctx->player_id);' . "\n" .
             '$ret = "";' . "\n" .
-            'if ($_ctx->stays) {' . "\n" .
-            '  foreach($_ctx->stays as $_ctx->stay) {' . "\n" .
-            '    if ($_ctx->stay[\'room_id\'] > 999) {' . "\n" .
-            '      $info = sprintf(\'' . addslashes($staff) . '\', aubergeUtils::getIdPosition($_ctx->player_id, $_ctx->stay[\'position\']));' . "\n" .
+            'if (dcCore::app()->ctx->stays) {' . "\n" .
+            '  foreach(dcCore::app()->ctx->stays as dcCore::app()->ctx->stay) {' . "\n" .
+            '    if (dcCore::app()->ctx->stay[\'room_id\'] > 999) {' . "\n" .
+            '      $info = sprintf(\'' . addslashes($staff) . '\', aubergeUtils::getIdPosition(dcCore::app()->ctx->player_id, dcCore::app()->ctx->stay[\'position\']));' . "\n" .
             '    } else {' . "\n" .
-            '      $info = sprintf(\'' . addslashes($room) . '\', $_ctx->stay[\'room_id\']);' . "\n" .
+            '      $info = sprintf(\'' . addslashes($room) . '\', dcCore::app()->ctx->stay[\'room_id\']);' . "\n" .
             '    }' . "\n" .
-            '    if (strtotime($_ctx->stay[\'check_in\']) <= time()) {' . "\n" .
+            '    if (strtotime(dcCore::app()->ctx->stay[\'check_in\']) <= time()) {' . "\n" .
             '      $ret .= sprintf(' . "\n" .
             '        \'' . addslashes($item) . '\',' . "\n" .
-            '        dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_in\']),' . "\n" .
-            '        dt::dt2str(\'' . $format . '\', $_ctx->stay[\'check_out\']),' . "\n" .
+            '        dt::dt2str(\'' . $format . '\', dcCore::app()->ctx->stay[\'check_in\']),' . "\n" .
+            '        dt::dt2str(\'' . $format . '\', dcCore::app()->ctx->stay[\'check_out\']),' . "\n" .
             '        $info' . "\n" .
             '      );' . "\n" .
             '    }' . "\n" .
             '  }' . "\n" .
-            '  echo ' . sprintf($f, 'sprintf(\'' . addslashes($list) . '\', $ret)') .';' . "\n" .
+            '  echo ' . sprintf($f, 'sprintf(\'' . addslashes($list) . '\', $ret)') . ';' . "\n" .
             '} ?>';
     }
 
@@ -152,16 +153,16 @@ class aubergeTpl
         if (!empty($attr['format'])) {
             $format = addslashes($attr['format']);
         } else {
-            $format = $GLOBALS['core']->blog->settings->system->date_format;
+            $format = dcCore::app()->blog->settings->system->date_format;
         }
 
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php '. "\n" .
-            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
-            '$_ctx->check_in = aubergeData::getUserCheckIn($core, $_ctx->player_id, $dt);' . "\n" .
-            'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', $_ctx->check_in)') . '; ?>';
+        return '<?php ' . "\n" .
+            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
+            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
+            'dcCore::app()->ctx->check_in = aubergeData::getUserCheckIn(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
+            'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', dcCore::app()->ctx->check_in)') . '; ?>';
     }
 
     /**
@@ -176,16 +177,16 @@ class aubergeTpl
         if (!empty($attr['format'])) {
             $format = addslashes($attr['format']);
         } else {
-            $format = $GLOBALS['core']->blog->settings->system->date_format;
+            $format = dcCore::app()->blog->settings->system->date_format;
         }
 
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
+        $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php '. "\n" .
-            '$_ctx->player_id = $_ctx->exists("users") ? $_ctx->users->user_id : $_ctx->posts->user_id;' . "\n" .
-            '$dt = $_ctx->exists("posts") ? $_ctx->posts->post_dt : null;' . "\n" .
-            '$_ctx->check_out = aubergeData::getUserCheckOut($core, $_ctx->player_id, $dt);' . "\n" .
-            'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', $_ctx->check_out)') . '; ?>';
+        return '<?php ' . "\n" .
+            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
+            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
+            'dcCore::app()->ctx->check_out = aubergeData::getUserCheckOut(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
+            'echo ' . sprintf($f, 'dt::dt2str(\'' . $format . '\', dcCore::app()->ctx->check_out)') . '; ?>';
     }
 
     /*dtd
@@ -196,11 +197,11 @@ class aubergeTpl
      */
     public static function CommentIfEven($attr)
     {
-        $ret = isset($attr['return']) ? $attr['return'] : 'even';
+        $ret = $attr['return'] ?? 'even';
         $ret = html::escapeHTML($ret);
 
         return
-        '<?php if ($_ctx->comments->index()%2) { ' .
+        '<?php if (dcCore::app()->ctx->comments->index()) { ' .
         "echo '" . addslashes($ret) . "'; } ?>";
     }
 
@@ -212,11 +213,11 @@ class aubergeTpl
      */
     public static function PingIfEven($attr)
     {
-        $ret = isset($attr['return']) ? $attr['return'] : 'even';
+        $ret = $attr['return'] ?? 'even';
         $ret = html::escapeHTML($ret);
 
         return
-        '<?php if ($_ctx->pings->index()%2) { ' .
+        '<?php if (dcCore::app()->ctx->pings->index()) { ' .
         "echo '" . addslashes($ret) . "'; } ?>";
     }
 
@@ -225,8 +226,9 @@ class aubergeTpl
      */
     public static function BlogShortname($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : $core->blog->id)') . '; ?>';
+        $f = dcCore::app()->tpl->getFilters($attr);
+
+        return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : dcCore::app()->blog->id)') . '; ?>';
     }
 
     /*dtd
@@ -234,8 +236,9 @@ class aubergeTpl
      */
     public static function BlogNbEntriesFirstPage($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_for_home') . '; ?>';
+        $f = dcCore::app()->tpl->getFilters($attr);
+
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->settings->system->nb_post_for_home') . '; ?>';
     }
 
     /*dtd
@@ -243,13 +246,15 @@ class aubergeTpl
      */
     public static function BlogNbEntriesPerPage($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, '$core->blog->settings->system->nb_post_per_page') . '; ?>';
+        $f = dcCore::app()->tpl->getFilters($attr);
+
+        return '<?php echo ' . sprintf($f, 'dcCore::app()->blog->settings->system->nb_post_per_page') . '; ?>';
     }
 
     public static function TagLabel($attr)
     {
-        $f = $GLOBALS['core']->tpl->getFilters($attr);
-        return '<?php echo ' . sprintf($f, 'aubergeUtils::getTagLabel($_ctx->meta->meta_id)') . '; ?>';
+        $f = dcCore::app()->tpl->getFilters($attr);
+
+        return '<?php echo ' . sprintf($f, 'aubergeUtils::getTagLabel(dcCore::app()->ctx->meta->meta_id)') . '; ?>';
     }
 }

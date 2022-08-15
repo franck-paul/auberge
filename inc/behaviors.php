@@ -17,21 +17,19 @@ class aubergeAdminBehaviors
 {
     public static function adminPageHTMLHead()
     {
-        global $core;
-
         // Ajout feuille de style spécifique
         echo
-        dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin.css')), 'screen', $core->getVersion('auberge'));
+        dcPage::cssModuleLoad('auberge/css/admin.css', 'screen', dcCore::app()->getVersion('auberge'));
 
-        if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
+        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id))) {
         } else {
             // Ajout feuille de style spécifique non admin
             echo
-            dcPage::cssLoad(urldecode(dcPage::getPF('auberge/css/admin-usage.css')), 'screen', $core->getVersion('auberge'));
+            dcPage::cssModuleLoad('auberge/css/admin-usage.css', 'screen', dcCore::app()->getVersion('auberge'));
         }
 
         // Ajout favicon spécifique
-        if ($core->auth->user_prefs->interface->hide_std_favicon) {
+        if (dcCore::app()->auth->user_prefs->interface->hide_std_favicon) {
             echo
                 '<link rel="icon" type="image/png" href="favicon.png" />' . "\n" .
                 '<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />' . "\n";
@@ -40,9 +38,7 @@ class aubergeAdminBehaviors
 
     public static function adminPostFormItems($main, $sidebar, $post)
     {
-        global $core;
-
-        if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
+        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id))) {
             // No change for super-admin or blog's admins
             return;
         }
@@ -62,8 +58,7 @@ class aubergeAdminBehaviors
 
         // - options-box remove all except fields which be replaced by hidden fields
         $sidebar['options-box']['title']                         = '';
-        $sidebar['options-box']['items']['post_open_comment_tb'] =
-        form::hidden('post_open_comment', $post ? $post->post_open_comment : true) .
+        $sidebar['options-box']['items']['post_open_comment_tb'] = form::hidden('post_open_comment', $post ? $post->post_open_comment : true) .
         form::hidden('post_open_tb', $post ? $post->post_open_tb : true);
         $sidebar['options-box']['items']['post_password'] = form::hidden('post_password', $post ? $post->post_password : null);
         $sidebar['options-box']['items']['post_url']      = form::hidden('post_url', $post ? $post->post_url : null);
@@ -99,8 +94,8 @@ class aubergeAdminBehaviors
      */
     public static function adminUsersSortbyCombo($opt)
     {
-        $opt[0][__('Room')] = 'room_id';
-        $opt[0][__('Check-in')] = 'check_in';
+        $opt[0][__('Room')]      = 'room_id';
+        $opt[0][__('Check-in')]  = 'check_in';
         $opt[0][__('Check-out')] = 'check_out';
     }
 
@@ -134,14 +129,14 @@ class aubergeAdminBehaviors
             $check_in  = $rs->check_in;
             $check_out = $rs->check_out;
         } else {
-            $room      = aubergeData::getUserRoom($core, $rs->user_id);
-            $role      = aubergeData::getUserStaffRole($core, $rs->user_id);
-            $check_in  = aubergeData::getUserCheckIn($core, $rs->user_id);
-            $check_out = aubergeData::getUserCheckOut($core, $rs->user_id);
+            $room      = aubergeData::getUserRoom(dcCore::app(), $rs->user_id);
+            $role      = aubergeData::getUserStaffRole(dcCore::app(), $rs->user_id);
+            $check_in  = aubergeData::getUserCheckIn(dcCore::app(), $rs->user_id);
+            $check_out = aubergeData::getUserCheckOut(dcCore::app(), $rs->user_id);
         }
         $cols['room']      = '<td class="nowrap count">' . ($room ?: '') . '</td>';
         $cols['role']      = '<td class="nowrap">' . ($role ?: '') . '</td>';
-        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
+        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in)  > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
         $cols['check_out'] = '<td class="nowrap">' . (strtotime($check_out) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_out) : '') . '</td>';
     }
 
@@ -152,13 +147,11 @@ class aubergeAdminBehaviors
      */
     public static function adminUserForm($rs)
     {
-        global $core;
-
         if ($rs instanceof record) {
-            $room      = aubergeData::getUserRoom($core, $rs->user_id);
-            $role      = aubergeData::getUserStaffRole($core, $rs->user_id);
-            $check_in  = aubergeData::getUserCheckIn($core, $rs->user_id);
-            $check_out = aubergeData::getUserCheckOut($core, $rs->user_id);
+            $room      = aubergeData::getUserRoom(dcCore::app(), $rs->user_id);
+            $role      = aubergeData::getUserStaffRole(dcCore::app(), $rs->user_id);
+            $check_in  = aubergeData::getUserCheckIn(dcCore::app(), $rs->user_id);
+            $check_out = aubergeData::getUserCheckOut(dcCore::app(), $rs->user_id);
         } else {
             $room      = 0;
             $role      = '';
@@ -173,14 +166,14 @@ class aubergeAdminBehaviors
         form::number('user_room_id', [
             'min'     => 0,
             'max'     => 1999,
-            'default' => $room
+            'default' => $room,
         ]) .
         '</p>' .
         '<p class="form-note">' . __('0 = not set, 1 to 999 = residents, 1000+ = staff.') . '</p>' .
         '<p class="field"><label for="user_staff_role">' . __('Staff role:') . '</label> ' .
         form::field('user_staff_role', 20, 255, [
             'default'      => html::escapeHTML($role),
-            'autocomplete' => __('staff role')
+            'autocomplete' => __('staff role'),
         ]) .
         '</p>' .
         '<p class="form-note">' . __('Used only for staff member.') . '</p>';
@@ -189,9 +182,11 @@ class aubergeAdminBehaviors
         if (strtotime($check_in) <= 0 || strtotime($check_out) <= 0) {
             echo __('Dates of stay are not yet known.');
         } else {
-            echo sprintf(__('Stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
+            echo sprintf(
+                __('Stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
                 dt::dt2str(__('%A, %B %e %Y'), $check_in),
-                dt::dt2str(__('%A, %B %e %Y'), $check_out));
+                dt::dt2str(__('%A, %B %e %Y'), $check_out)
+            );
         }
         echo '</p></div>';
     }
@@ -204,7 +199,7 @@ class aubergeAdminBehaviors
      */
     public static function adminBeforeUserUpdate($cur, $user_id = '')
     {
-        $cur->room_id    = (integer) $_POST['user_room_id'];
+        $cur->room_id    = (int) $_POST['user_room_id'];
         $cur->staff_role = $_POST['user_staff_role'];
     }
 
@@ -212,11 +207,11 @@ class aubergeAdminBehaviors
     {
         // Add modules to the contents stack
         $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
-        if ($core->auth->isSuperAdmin() || ($core->blog && $core->auth->check('contentadmin', $core->blog->id))) {
-            $contact_url = $core->blog->url . $core->url->getURLFor('contactme');
+        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id))) {
+            $contact_url = dcCore::app()->blog->url . dcCore::app()->url->getURLFor('contactme');
         } else {
             // URL is not available in dashboard for non-admin, so ugly code !!!
-            $contact_url = $core->blog->url . 'contact';
+            $contact_url = dcCore::app()->blog->url . 'contact';
         }
 
         // Compose module content
@@ -226,18 +221,18 @@ class aubergeAdminBehaviors
 
         // Title: Pseudo
         $ret .= '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
-        sprintf($title, $core->auth->getInfo('user_displayname')) . '</h3>';
+        sprintf($title, dcCore::app()->auth->getInfo('user_displayname')) . '</h3>';
 
         // Stays
-        $stays = aubergeData::getUserStays($core, $core->auth->userID());
+        $stays = aubergeData::getUserStays(dcCore::app(), dcCore::app()->auth->userID());
         if ($stays) {
             foreach ($stays as $stay) {
-                $check_in = $stay['check_in'];
+                $check_in  = $stay['check_in'];
                 $check_out = $stay['check_out'];
-                $room_id = $stay['room_id'];
-                $position = aubergeUtils::getIdPosition($core->auth->userID(), $stay['position']);
+                $room_id   = $stay['room_id'];
+                $position  = aubergeUtils::getIdPosition(dcCore::app()->auth->userID(), $stay['position']);
 
-                $is_staff   = false;
+                $is_staff = false;
                 if ($room_id > 0 && $room_id < 1000) {
                     // Single resident
                 } elseif ($room_id >= 1000) {
@@ -245,9 +240,11 @@ class aubergeAdminBehaviors
                     $room_id -= 999;
                 }
                 $ret .= '<p>';
-                $ret .= sprintf(__('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
+                $ret .= sprintf(
+                    __('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
                     dt::dt2str(__('%A, %B %e %Y'), $check_in),
-                    dt::dt2str(__('%A, %B %e %Y'), $check_out));
+                    dt::dt2str(__('%A, %B %e %Y'), $check_out)
+                );
                 if ($room_id > 0) {
                     $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
                     $ret .= '<br />' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
@@ -269,7 +266,7 @@ class aubergeAdminBehaviors
         // User pseudo and email
         $info = sprintf(
             __('The email you use for this game is: <strong>%s</strong> (it will be known only to innkeepers).'),
-            $core->auth->getInfo('user_email')
+            dcCore::app()->auth->getInfo('user_email')
         );
         $ret .= '<p>' . $info . '</p>';
 
@@ -284,29 +281,20 @@ class aubergeAdminBehaviors
         $contents[] = new ArrayObject([$ret]);
 
         // Other actions on Dashboard
-        if (!$core->auth->isSuperAdmin() && !$core->blog && $core->auth->check('contentadmin', $core->blog->id)) {
+        if (!dcCore::app()->auth->isSuperAdmin() && !dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id)) {
             // Remove uick entry from Dashboard
-            $core->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
+            dcCore::app()->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
         }
-    }
-
-    public function adminDashboardIcons($core, $icons)
-    {
-        $icons['auberge'] = new ArrayObject([
-            __('auberge'),
-            $core->adminurl->get('admin.plugin.auberge'),
-            dcPage::getPF('auberge/icon-db.png')
-        ]);
     }
 
     public function adminDashboardFavorites($core, $favs)
     {
         $favs->register('auberge', [
             'title'       => __('Auberge'),
-            'url'         => $core->adminurl->get('admin.plugin.auberge'),
+            'url'         => dcCore::app()->adminurl->get('admin.plugin.auberge'),
             'small-icon'  => dcPage::getPF('auberge/icon.png'),
             'large-icon'  => dcPage::getPF('auberge/icon-db.png'),
-            'permissions' => 'contentadmin'
+            'permissions' => 'contentadmin',
         ]);
     }
 }
@@ -332,8 +320,7 @@ class rsAubergeExtCommentPublic extends rsExtComment
     public static function isMe($rs)
     {
         return
-        $rs->comment_email &&
-        $rs->comment_email == $rs->user_email;
+        $rs->comment_email && $rs->comment_email == $rs->user_email;
     }
 }
 
@@ -348,13 +335,10 @@ class aubergeUrlHandlers extends dcUrlHandlers
      */
     public static function archive($args)
     {
-        $_ctx = &$GLOBALS['_ctx'];
-        $core = &$GLOBALS['core'];
-
         $anchor = '';
         if (preg_match('|^/([0-9]{4})/([0-9]{2})$|', $args, $m)) {
             $anchor = '#Y' . $m[1] . '-M' . $m[2];
-            http::redirect($core->blog->url . $core->url->getURLFor('archive') . $anchor);
+            http::redirect(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('archive') . $anchor);
         }
         self::serveDocument('archive.html');
     }

@@ -10,31 +10,32 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-
-if (!defined('DC_RC_PATH')) {return;}
+if (!defined('DC_RC_PATH')) {
+    return;
+}
 
 // Public behaviours
-$core->addBehavior('coreBlogGetComments', ['aubergePublicBehaviors', 'coreBlogGetComments']);
+dcCore::app()->addBehavior('coreBlogGetComments', ['aubergePublicBehaviors', 'coreBlogGetComments']);
 
 // Public template tags
-$core->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
-$core->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
-$core->tpl->addValue('AuthorCheckIn', ['aubergeTpl', 'authorCheckIn']);
-$core->tpl->addValue('AuthorCheckOut', ['aubergeTpl', 'AuthorCheckOut']);
-$core->tpl->addValue('AuthorCheckStays', ['aubergeTpl', 'AuthorCheckStays']);
-$core->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
-$core->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
-$core->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
-$core->tpl->addValue('TagLabel', ['aubergeTpl', 'TagLabel']);
+dcCore::app()->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
+dcCore::app()->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
+dcCore::app()->tpl->addValue('AuthorCheckIn', ['aubergeTpl', 'authorCheckIn']);
+dcCore::app()->tpl->addValue('AuthorCheckOut', ['aubergeTpl', 'AuthorCheckOut']);
+dcCore::app()->tpl->addValue('AuthorCheckStays', ['aubergeTpl', 'AuthorCheckStays']);
+dcCore::app()->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
+dcCore::app()->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
+dcCore::app()->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
+dcCore::app()->tpl->addValue('TagLabel', ['aubergeTpl', 'TagLabel']);
 
 if (version_compare(DC_VERSION, '2.17-dev', '<')) {
     // Add public template which are not yet in Dotclear (will be in next 2.17)
-    $core->tpl->addValue('BlogNbEntriesFirstPage', ['aubergeTpl', 'BlogNbEntriesFirstPage']);
-    $core->tpl->addValue('BlogNbEntriesPerPage', ['aubergeTpl', 'BlogNbEntriesPerPage']);
+    dcCore::app()->tpl->addValue('BlogNbEntriesFirstPage', ['aubergeTpl', 'BlogNbEntriesFirstPage']);
+    dcCore::app()->tpl->addValue('BlogNbEntriesPerPage', ['aubergeTpl', 'BlogNbEntriesPerPage']);
 }
 
 // Public template tags attribute
-$core->addBehavior('publicBeforeContentFilter', ['aubergeTpl', 'publicBeforeContentFilter']);
+dcCore::app()->addBehavior('publicBeforeContentFilter', ['aubergeTpl', 'publicBeforeContentFilter']);
 
 // Add URL handler for archives
-$core->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);
+dcCore::app()->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);
