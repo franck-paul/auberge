@@ -20,7 +20,7 @@ Seuls les membres du personnel (numéro de chambre >= 1000) peuvent avoir un rô
 
 Exemple :
 
-```
+```html
 <h3 class="{{tpl:AuthorRoomClass}}">{{tpl:AuthorRoom}}</h3>
 ```
 

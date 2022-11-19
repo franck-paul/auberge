@@ -19,7 +19,7 @@ class aubergeTpl
      * @param      <type>  $tag    The tag
      * @param      <type>  $args   The arguments
      */
-    public static function publicBeforeContentFilter($core, $tag, $args)
+    public static function publicBeforeContentFilter($tag, $args)
     {
         if (isset($args['no_first_aside']) && (int) $args['no_first_aside'] > 0) {
             if (strpos($args[0], '<aside>') === 0) {

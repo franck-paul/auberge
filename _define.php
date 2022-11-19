@@ -15,20 +15,23 @@ if (!defined('DC_RC_PATH')) {
 }
 
 $this->registerModule(
-    'Auberge des blogueurs',  // Name
-    'Des vis et des boulons', // Description
-    'Franck Paul',            // Author
-    '0.18',
+    'Auberge des blogueurs',
+    'Des vis et des boulons',
+    'Franck Paul',
+    '0.19',
     [
-        'requires'    => [['core', '2.23']],   // Requirements
-        'permissions' => 'usage,contentadmin', // Permissions
-        'type'        => 'plugin',             // Type
-        'priority'    => 1500,                 // Priority
-        'settings'    => [// Settings
+        'requires'    => [['core', '2.24']],
+        'permissions' => dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_USAGE,
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]),
+        'type'     => 'plugin',
+        'priority' => 1500,
+        'settings' => [
         ],
 
-        'details'    => 'https://open-time.net/?q=auberge',       // Details URL
-        'support'    => 'https://github.com/franck-paul/auberge', // Support URL
+        'details'    => 'https://open-time.net/?q=auberge',
+        'support'    => 'https://github.com/franck-paul/auberge',
         'repository' => 'https://raw.githubusercontent.com/franck-paul/auberge/master/dcstore.xml',
     ]
 );

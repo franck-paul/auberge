@@ -15,27 +15,27 @@ if (!defined('DC_RC_PATH')) {
 }
 
 // Public behaviours
-dcCore::app()->addBehavior('coreBlogGetComments', ['aubergePublicBehaviors', 'coreBlogGetComments']);
+dcCore::app()->addBehavior('coreBlogGetComments', [aubergePublicBehaviors::class, 'coreBlogGetComments']);
 
 // Public template tags
-dcCore::app()->tpl->addValue('AuthorRoom', ['aubergeTpl', 'authorRoom']);
-dcCore::app()->tpl->addValue('AuthorRoomClass', ['aubergeTpl', 'authorRoomClass']);
-dcCore::app()->tpl->addValue('AuthorCheckIn', ['aubergeTpl', 'authorCheckIn']);
-dcCore::app()->tpl->addValue('AuthorCheckOut', ['aubergeTpl', 'AuthorCheckOut']);
-dcCore::app()->tpl->addValue('AuthorCheckStays', ['aubergeTpl', 'AuthorCheckStays']);
-dcCore::app()->tpl->addValue('CommentIfEven', ['aubergeTpl', 'CommentIfEven']);
-dcCore::app()->tpl->addValue('PingIfEven', ['aubergeTpl', 'PingIfEven']);
-dcCore::app()->tpl->addValue('BlogShortname', ['aubergeTpl', 'BlogShortname']);
-dcCore::app()->tpl->addValue('TagLabel', ['aubergeTpl', 'TagLabel']);
+dcCore::app()->tpl->addValue('AuthorRoom', [aubergeTpl::class, 'authorRoom']);
+dcCore::app()->tpl->addValue('AuthorRoomClass', [aubergeTpl::class, 'authorRoomClass']);
+dcCore::app()->tpl->addValue('AuthorCheckIn', [aubergeTpl::class, 'authorCheckIn']);
+dcCore::app()->tpl->addValue('AuthorCheckOut', [aubergeTpl::class, 'AuthorCheckOut']);
+dcCore::app()->tpl->addValue('AuthorCheckStays', [aubergeTpl::class, 'AuthorCheckStays']);
+dcCore::app()->tpl->addValue('CommentIfEven', [aubergeTpl::class, 'CommentIfEven']);
+dcCore::app()->tpl->addValue('PingIfEven', [aubergeTpl::class, 'PingIfEven']);
+dcCore::app()->tpl->addValue('BlogShortname', [aubergeTpl::class, 'BlogShortname']);
+dcCore::app()->tpl->addValue('TagLabel', [aubergeTpl::class, 'TagLabel']);
 
 if (version_compare(DC_VERSION, '2.17-dev', '<')) {
     // Add public template which are not yet in Dotclear (will be in next 2.17)
-    dcCore::app()->tpl->addValue('BlogNbEntriesFirstPage', ['aubergeTpl', 'BlogNbEntriesFirstPage']);
-    dcCore::app()->tpl->addValue('BlogNbEntriesPerPage', ['aubergeTpl', 'BlogNbEntriesPerPage']);
+    dcCore::app()->tpl->addValue('BlogNbEntriesFirstPage', [aubergeTpl::class, 'BlogNbEntriesFirstPage']);
+    dcCore::app()->tpl->addValue('BlogNbEntriesPerPage', [aubergeTpl::class, 'BlogNbEntriesPerPage']);
 }
 
 // Public template tags attribute
-dcCore::app()->addBehavior('publicBeforeContentFilter', ['aubergeTpl', 'publicBeforeContentFilter']);
+dcCore::app()->addBehavior('publicBeforeContentFilterV2', [aubergeTpl::class, 'publicBeforeContentFilter']);
 
 // Add URL handler for archives
 dcCore::app()->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);

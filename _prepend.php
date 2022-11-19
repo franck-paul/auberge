@@ -16,12 +16,14 @@ if (!defined('DC_RC_PATH')) {
 
 // Public and Admin mode
 
-$__autoload['aubergePublicBehaviors']    = __DIR__ . '/inc/behaviors.php';
-$__autoload['aubergeUrlHandlers']        = __DIR__ . '/inc/behaviors.php';
-$__autoload['rsAubergeExtCommentPublic'] = __DIR__ . '/inc/behaviors.php';
-$__autoload['aubergeTpl']                = __DIR__ . '/inc/tpl.php';
-$__autoload['aubergeData']               = __DIR__ . '/inc/data.php';
-$__autoload['aubergeUtils']              = __DIR__ . '/inc/utils.php';
+Clearbricks::lib()->autoload([
+    'aubergePublicBehaviors'    => __DIR__ . '/inc/behaviors.php',
+    'aubergeUrlHandlers'        => __DIR__ . '/inc/behaviors.php',
+    'rsAubergeExtCommentPublic' => __DIR__ . '/inc/behaviors.php',
+    'aubergeTpl'                => __DIR__ . '/inc/tpl.php',
+    'aubergeData'               => __DIR__ . '/inc/data.php',
+    'aubergeUtils'              => __DIR__ . '/inc/utils.php',
+]);
 
 if (!defined('DC_CONTEXT_ADMIN')) {
     return false;
@@ -29,4 +31,4 @@ if (!defined('DC_CONTEXT_ADMIN')) {
 
 // Admin mode only
 
-$__autoload['aubergeAdminBehaviors'] = __DIR__ . '/inc/behaviors.php';
+Clearbricks::lib()->autoload(['aubergeAdminBehaviors' => __DIR__ . '/inc/behaviors.php']);

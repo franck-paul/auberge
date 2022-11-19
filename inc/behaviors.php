@@ -21,7 +21,9 @@ class aubergeAdminBehaviors
         echo
         dcPage::cssModuleLoad('auberge/css/admin.css', 'screen', dcCore::app()->getVersion('auberge'));
 
-        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id))) {
+        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id))) {
         } else {
             // Ajout feuille de style spécifique non admin
             echo
@@ -38,7 +40,9 @@ class aubergeAdminBehaviors
 
     public static function adminPostFormItems($main, $sidebar, $post)
     {
-        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id))) {
+        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id))) {
             // No change for super-admin or blog's admins
             return;
         }
@@ -106,7 +110,7 @@ class aubergeAdminBehaviors
      * @param      record   $rs     users records
      * @param      array    $cols   The cols
      */
-    public static function adminUserListHeader($core, $rs, $cols)
+    public static function adminUserListHeader($rs, $cols)
     {
         $cols['room']      = '<th scope="col" class="nowrap">' . __('Room') . '</th>';
         $cols['role']      = '<th scope="col" class="nowrap">' . __('Staff role') . '</th>';
@@ -121,7 +125,7 @@ class aubergeAdminBehaviors
      * @param      record  $rs     current user record
      * @param      array   $cols   The cols
      */
-    public static function adminUserListValue($core, $rs, $cols)
+    public static function adminUserListValue($rs, $cols)
     {
         if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
             $room      = $rs->room_id;
@@ -136,18 +140,18 @@ class aubergeAdminBehaviors
         }
         $cols['room']      = '<td class="nowrap count">' . ($room ?: '') . '</td>';
         $cols['role']      = '<td class="nowrap">' . ($role ?: '') . '</td>';
-        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in)  > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
+        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
         $cols['check_out'] = '<td class="nowrap">' . (strtotime($check_out) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_out) : '') . '</td>';
     }
 
     /**
      * Add room number input field in user form
      *
-     * @param      record  $rs     user record
+     * @param      null|record  $rs     user record
      */
     public static function adminUserForm($rs)
     {
-        if ($rs instanceof record) {
+        if ($rs) {
             $room      = aubergeData::getUserRoom(dcCore::app(), $rs->user_id);
             $role      = aubergeData::getUserStaffRole(dcCore::app(), $rs->user_id);
             $check_in  = aubergeData::getUserCheckIn(dcCore::app(), $rs->user_id);
@@ -197,17 +201,19 @@ class aubergeAdminBehaviors
      * @param      cursor  $cur      User cursor
      * @param      string  $user_id  The user identifier
      */
-    public static function adminBeforeUserUpdate($cur, $user_id = '')
+    public static function adminBeforeUserUpdate($cur)
     {
         $cur->room_id    = (int) $_POST['user_room_id'];
         $cur->staff_role = $_POST['user_staff_role'];
     }
 
-    public static function adminDashboardContents($core, $contents)
+    public static function adminDashboardContents($contents)
     {
         // Add modules to the contents stack
         $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
-        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id))) {
+        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id))) {
             $contact_url = dcCore::app()->blog->url . dcCore::app()->url->getURLFor('contactme');
         } else {
             // URL is not available in dashboard for non-admin, so ugly code !!!
@@ -281,20 +287,24 @@ class aubergeAdminBehaviors
         $contents[] = new ArrayObject([$ret]);
 
         // Other actions on Dashboard
-        if (!dcCore::app()->auth->isSuperAdmin() && !dcCore::app()->blog && dcCore::app()->auth->check('contentadmin', dcCore::app()->blog->id)) {
+        if (!dcCore::app()->auth->isSuperAdmin() && !dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
+            dcAuth::PERMISSION_CONTENT_ADMIN,
+        ]), dcCore::app()->blog->id)) {
             // Remove uick entry from Dashboard
             dcCore::app()->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
         }
     }
 
-    public function adminDashboardFavorites($core, $favs)
+    public function adminDashboardFavorites($favs)
     {
         $favs->register('auberge', [
             'title'       => __('Auberge'),
             'url'         => dcCore::app()->adminurl->get('admin.plugin.auberge'),
             'small-icon'  => dcPage::getPF('auberge/icon.png'),
             'large-icon'  => dcPage::getPF('auberge/icon-db.png'),
-            'permissions' => 'contentadmin',
+            'permissions' => dcCore::app()->auth->makePermissions([
+                dcAuth::PERMISSION_CONTENT_ADMIN,
+            ]),
         ]);
     }
 }
@@ -336,7 +346,7 @@ class aubergeUrlHandlers extends dcUrlHandlers
     public static function archive($args)
     {
         $anchor = '';
-        if (preg_match('|^/([0-9]{4})/([0-9]{2})$|', $args, $m)) {
+        if (preg_match('|^/(\d{4})/(\d{2})$|', $args, $m)) {
             $anchor = '#Y' . $m[1] . '-M' . $m[2];
             http::redirect(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('archive') . $anchor);
         }
