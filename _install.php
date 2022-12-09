@@ -14,10 +14,7 @@ if (!defined('DC_CONTEXT_ADMIN')) {
     return;
 }
 
-$new_version = dcCore::app()->plugins->moduleInfo('auberge', 'version');
-$old_version = dcCore::app()->getVersion('auberge');
-
-if (version_compare((string) $old_version, $new_version, '>=')) {
+if (!dcCore::app()->newVersion(basename(__DIR__), dcCore::app()->plugins->moduleInfo(basename(__DIR__), 'version'))) {
     return;
 }
 
@@ -34,8 +31,6 @@ try {
     // Schema installation
     $si      = new dbStruct(dcCore::app()->con, dcCore::app()->prefix);
     $changes = $si->synchronize($s);
-
-    dcCore::app()->setVersion('auberge', $new_version);
 
     return true;
 } catch (Exception $e) {
