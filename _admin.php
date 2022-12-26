@@ -21,28 +21,32 @@ dcCore::app()->menu[dcAdmin::MENU_BLOG]->addItem(__('Auberge'), 'plugin.php?p=au
             dcAuth::PERMISSION_USAGE,
             dcAuth::PERMISSION_CONTENT_ADMIN,
         ]), dcCore::app()->blog->id));
-
-dcCore::app()->addBehavior('adminDashboardFavoritesV2', [aubergeAdminBehaviors::class, 'adminDashboardFavorites']);
 */
+dcCore::app()->addBehaviors([
+    //'adminDashboardFavoritesV2' => [aubergeAdminBehaviors::class, 'adminDashboardFavorites'],
 
-// Generic admin behavior callbacks
-dcCore::app()->addBehavior('adminPageHTMLHead', [aubergeAdminBehaviors::class, 'adminPageHTMLHead']);
+    // Generic admin behavior callbacks
+    'adminPageHTMLHead'        => [aubergeAdminBehaviors::class, 'adminPageHTMLHead'],
+
+    'adminUserListHeaderV2'    => [aubergeAdminBehaviors::class, 'adminUserListHeader'],
+    'adminUserListValueV2'     => [aubergeAdminBehaviors::class, 'adminUserListValue'],
+
+    // Add behaviour callbacks for user form
+    'adminUserForm'            => [aubergeAdminBehaviors::class, 'adminUserForm'],
+    'adminBeforeUserCreate'    => [aubergeAdminBehaviors::class, 'adminBeforeUserUpdate'],
+    'adminBeforeUserUpdate'    => [aubergeAdminBehaviors::class, 'adminBeforeUserUpdate'],
+
+    // Add behaviour callbacks for post form
+    'adminPostFormItems'       => [aubergeAdminBehaviors::class, 'adminPostFormItems'],
+
+    // Dashboard behaviours
+    'adminDashboardContentsV2' => [aubergeAdminBehaviors::class, 'adminDashboardContents'],
+]);
 
 // Add behaviour callbacks for user lists
 if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
-    dcCore::app()->addBehavior('adminGetUsers', [aubergeAdminBehaviors::class, 'adminGetUsers']);
-    dcCore::app()->addBehavior('adminUsersSortbyCombo', [aubergeAdminBehaviors::class, 'adminUsersSortbyCombo']);
+    dcCore::app()->addBehaviors([
+        'adminGetUsers'         => [aubergeAdminBehaviors::class, 'adminGetUsers'],
+        'adminUsersSortbyCombo' => [aubergeAdminBehaviors::class, 'adminUsersSortbyCombo'],
+    ]);
 }
-dcCore::app()->addBehavior('adminUserListHeaderV2', [aubergeAdminBehaviors::class, 'adminUserListHeader']);
-dcCore::app()->addBehavior('adminUserListValueV2', [aubergeAdminBehaviors::class, 'adminUserListValue']);
-
-// Add behaviour callbacks for user form
-dcCore::app()->addBehavior('adminUserForm', [aubergeAdminBehaviors::class, 'adminUserForm']);
-dcCore::app()->addBehavior('adminBeforeUserCreate', [aubergeAdminBehaviors::class, 'adminBeforeUserUpdate']);
-dcCore::app()->addBehavior('adminBeforeUserUpdate', [aubergeAdminBehaviors::class, 'adminBeforeUserUpdate']);
-
-// Add behaviour callbacks for post form
-dcCore::app()->addBehavior('adminPostFormItems', [aubergeAdminBehaviors::class, 'adminPostFormItems']);
-
-// Dashboard behaviours
-dcCore::app()->addBehavior('adminDashboardContentsV2', [aubergeAdminBehaviors::class, 'adminDashboardContents']);
