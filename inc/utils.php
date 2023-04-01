@@ -10,10 +10,14 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\File\Files;
+use Dotclear\Helper\File\Path;
+
 class aubergeUtils
 {
-    private static $loaded = false;
-    private static $var_path;
+    private static bool $loaded      = false;
+    private static ?string $var_path = null;
     private static $tag_labels;
     private static $id_positions;
 
@@ -23,8 +27,8 @@ class aubergeUtils
             return;
         }
 
-        self::$var_path = path::real(DC_VAR) . '/blogs/auberge/';
-        files::makeDir(self::$var_path, true);
+        self::$var_path = Path::real(DC_VAR) . '/blogs/auberge/';
+        Files::makeDir(self::$var_path, true);
 
         // Load tag → label data
         $file             = self::$var_path . 'tags.json';
@@ -32,7 +36,7 @@ class aubergeUtils
         if (file_exists($file)) {
             $content = @file_get_contents($file);
             if ($content) {
-                self::$tag_labels = json_decode($content, true);
+                self::$tag_labels = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             }
         }
 
@@ -42,7 +46,7 @@ class aubergeUtils
         if (file_exists($file)) {
             $content = @file_get_contents($file);
             if ($content) {
-                self::$id_positions = json_decode($content, true);
+                self::$id_positions = json_decode($content, true, 512, JSON_THROW_ON_ERROR);
             }
         }
 

@@ -10,6 +10,9 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+
+use Dotclear\Helper\Html\Html;
+
 class aubergeTpl
 {
     /**
@@ -198,7 +201,7 @@ class aubergeTpl
     public static function CommentIfEven($attr)
     {
         $ret = $attr['return'] ?? 'even';
-        $ret = html::escapeHTML($ret);
+        $ret = Html::escapeHTML($ret);
 
         return
         '<?php if (dcCore::app()->ctx->comments->index()) { ' .
@@ -214,7 +217,7 @@ class aubergeTpl
     public static function PingIfEven($attr)
     {
         $ret = $attr['return'] ?? 'even';
-        $ret = html::escapeHTML($ret);
+        $ret = Html::escapeHTML($ret);
 
         return
         '<?php if (dcCore::app()->ctx->pings->index()) { ' .

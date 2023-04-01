@@ -155,7 +155,7 @@ class aubergeData
 
         $rs = dcCore::app()->con->select($sql);
         if ($rs->stays) {
-            $list = json_decode($rs->stays, true);
+            $list = json_decode($rs->stays, true, 512, JSON_THROW_ON_ERROR);
             usort($list, fn ($a, $b) => ($a['check_out'] > $b['check_out']));
 
             return $list;

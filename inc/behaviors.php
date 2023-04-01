@@ -11,6 +11,9 @@
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
 
+use Dotclear\Helper\Html\Html;
+use Dotclear\Helper\Network\Http;
+
 // Admin behaviours
 
 class aubergeAdminBehaviors
@@ -176,7 +179,7 @@ class aubergeAdminBehaviors
         '<p class="form-note">' . __('0 = not set, 1 to 999 = residents, 1000+ = staff.') . '</p>' .
         '<p class="field"><label for="user_staff_role">' . __('Staff role:') . '</label> ' .
         form::field('user_staff_role', 20, 255, [
-            'default'      => html::escapeHTML($role),
+            'default'      => Html::escapeHTML($role),
             'autocomplete' => __('staff role'),
         ]) .
         '</p>' .
@@ -348,7 +351,7 @@ class aubergeUrlHandlers extends dcUrlHandlers
         $anchor = '';
         if (preg_match('|^/(\d{4})/(\d{2})$|', $args, $m)) {
             $anchor = '#Y' . $m[1] . '-M' . $m[2];
-            http::redirect(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('archive') . $anchor);
+            Http::redirect(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('archive') . $anchor);
         }
         self::serveDocument('archive.html');
     }

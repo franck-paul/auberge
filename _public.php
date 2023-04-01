@@ -10,9 +10,6 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-if (!defined('DC_RC_PATH')) {
-    return;
-}
 
 // Public behaviours
 dcCore::app()->addBehavior('coreBlogGetComments', [aubergePublicBehaviors::class, 'coreBlogGetComments']);
@@ -36,6 +33,3 @@ if (version_compare(DC_VERSION, '2.17-dev', '<')) {
 
 // Public template tags attribute
 dcCore::app()->addBehavior('publicBeforeContentFilterV2', [aubergeTpl::class, 'publicBeforeContentFilter']);
-
-// Add URL handler for archives
-dcCore::app()->url->register('archive', 'archive', '^archive(/.+)?$', ['aubergeUrlHandlers', 'archive']);
