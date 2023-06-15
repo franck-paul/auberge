@@ -10,19 +10,27 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
 
+namespace Dotclear\Plugin\auberge;
+
+use ArrayObject;
+use dcAuth;
+use dcCore;
+use dcPage;
+use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
-use Dotclear\Helper\Network\Http;
+use form;
 
 // Admin behaviours
 
-class aubergeAdminBehaviors
+class BackendBehaviors
 {
     public static function adminPageHTMLHead()
     {
         // Ajout feuille de style spécifique
         echo
-        dcPage::cssModuleLoad('auberge/css/admin.css', 'screen', dcCore::app()->getVersion('auberge'));
+        dcPage::cssModuleLoad(My::id() . '/css/admin.css', 'screen', dcCore::app()->getVersion(My::id()));
 
         if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_CONTENT_ADMIN,
@@ -30,7 +38,7 @@ class aubergeAdminBehaviors
         } else {
             // Ajout feuille de style spécifique non admin
             echo
-            dcPage::cssModuleLoad('auberge/css/admin-usage.css', 'screen', dcCore::app()->getVersion('auberge'));
+            dcPage::cssModuleLoad(My::id() . '/css/admin-usage.css', 'screen', dcCore::app()->getVersion(My::id()));
         }
 
         // Ajout favicon spécifique
@@ -109,9 +117,9 @@ class aubergeAdminBehaviors
     /**
      * Add room column header in user's list
      *
-     * @param               $core   The core
-     * @param      record   $rs     users records
-     * @param      array    $cols   The cols
+     * @param                   $core   The core
+     * @param      MetaRecord     $rs     users records
+     * @param      array        $cols   The cols
      */
     public static function adminUserListHeader($rs, $cols)
     {
@@ -124,9 +132,9 @@ class aubergeAdminBehaviors
     /**
      * Add room number cell in user's list
      *
-     * @param              $core   The core
-     * @param      record  $rs     current user record
-     * @param      array   $cols   The cols
+     * @param                   $core   The core
+     * @param      MetaRecord     $rs     current user record
+     * @param      array        $cols   The cols
      */
     public static function adminUserListValue($rs, $cols)
     {
@@ -136,29 +144,29 @@ class aubergeAdminBehaviors
             $check_in  = $rs->check_in;
             $check_out = $rs->check_out;
         } else {
-            $room      = aubergeData::getUserRoom(dcCore::app(), $rs->user_id);
-            $role      = aubergeData::getUserStaffRole(dcCore::app(), $rs->user_id);
-            $check_in  = aubergeData::getUserCheckIn(dcCore::app(), $rs->user_id);
-            $check_out = aubergeData::getUserCheckOut(dcCore::app(), $rs->user_id);
+            $room      = CoreData::getUserRoom(dcCore::app(), $rs->user_id);
+            $role      = CoreData::getUserStaffRole(dcCore::app(), $rs->user_id);
+            $check_in  = CoreData::getUserCheckIn(dcCore::app(), $rs->user_id);
+            $check_out = CoreData::getUserCheckOut(dcCore::app(), $rs->user_id);
         }
         $cols['room']      = '<td class="nowrap count">' . ($room ?: '') . '</td>';
         $cols['role']      = '<td class="nowrap">' . ($role ?: '') . '</td>';
-        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
-        $cols['check_out'] = '<td class="nowrap">' . (strtotime($check_out) > 0 ? dt::dt2str(__('%Y-%m-%d'), $check_out) : '') . '</td>';
+        $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in) > 0 ? Date::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
+        $cols['check_out'] = '<td class="nowrap">' . (strtotime($check_out) > 0 ? Date::dt2str(__('%Y-%m-%d'), $check_out) : '') . '</td>';
     }
 
     /**
      * Add room number input field in user form
      *
-     * @param      null|record  $rs     user record
+     * @param      null|MetaRecord  $rs     user record
      */
     public static function adminUserForm($rs)
     {
         if ($rs) {
-            $room      = aubergeData::getUserRoom(dcCore::app(), $rs->user_id);
-            $role      = aubergeData::getUserStaffRole(dcCore::app(), $rs->user_id);
-            $check_in  = aubergeData::getUserCheckIn(dcCore::app(), $rs->user_id);
-            $check_out = aubergeData::getUserCheckOut(dcCore::app(), $rs->user_id);
+            $room      = CoreData::getUserRoom(dcCore::app(), $rs->user_id);
+            $role      = CoreData::getUserStaffRole(dcCore::app(), $rs->user_id);
+            $check_in  = CoreData::getUserCheckIn(dcCore::app(), $rs->user_id);
+            $check_out = CoreData::getUserCheckOut(dcCore::app(), $rs->user_id);
         } else {
             $room      = 0;
             $role      = '';
@@ -191,8 +199,8 @@ class aubergeAdminBehaviors
         } else {
             echo sprintf(
                 __('Stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
-                dt::dt2str(__('%A, %B %e %Y'), $check_in),
-                dt::dt2str(__('%A, %B %e %Y'), $check_out)
+                Date::dt2str(__('%A, %B %e %Y'), $check_in),
+                Date::dt2str(__('%A, %B %e %Y'), $check_out)
             );
         }
         echo '</p></div>';
@@ -201,7 +209,7 @@ class aubergeAdminBehaviors
     /**
      * Cope with user being created or updated
      *
-     * @param      cursor  $cur      User cursor
+     * @param      Cursor  $cur      User cursor
      * @param      string  $user_id  The user identifier
      */
     public static function adminBeforeUserUpdate($cur)
@@ -233,13 +241,13 @@ class aubergeAdminBehaviors
         sprintf($title, dcCore::app()->auth->getInfo('user_displayname')) . '</h3>';
 
         // Stays
-        $stays = aubergeData::getUserStays(dcCore::app(), dcCore::app()->auth->userID());
+        $stays = CoreData::getUserStays(dcCore::app(), dcCore::app()->auth->userID());
         if ($stays) {
             foreach ($stays as $stay) {
                 $check_in  = $stay['check_in'];
                 $check_out = $stay['check_out'];
                 $room_id   = $stay['room_id'];
-                $position  = aubergeUtils::getIdPosition(dcCore::app()->auth->userID(), $stay['position']);
+                $position  = CoreHelper::getIdPosition(dcCore::app()->auth->userID(), $stay['position']);
 
                 $is_staff = false;
                 if ($room_id > 0 && $room_id < 1000) {
@@ -251,8 +259,8 @@ class aubergeAdminBehaviors
                 $ret .= '<p>';
                 $ret .= sprintf(
                     __('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
-                    dt::dt2str(__('%A, %B %e %Y'), $check_in),
-                    dt::dt2str(__('%A, %B %e %Y'), $check_out)
+                    Date::dt2str(__('%A, %B %e %Y'), $check_in),
+                    Date::dt2str(__('%A, %B %e %Y'), $check_out)
                 );
                 if ($room_id > 0) {
                     $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
@@ -296,63 +304,5 @@ class aubergeAdminBehaviors
             // Remove uick entry from Dashboard
             dcCore::app()->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
         }
-    }
-
-    public function adminDashboardFavorites($favs)
-    {
-        $favs->register('auberge', [
-            'title'       => __('Auberge'),
-            'url'         => dcCore::app()->adminurl->get('admin.plugin.auberge'),
-            'small-icon'  => dcPage::getPF('auberge/icon.png'),
-            'large-icon'  => dcPage::getPF('auberge/icon-db.png'),
-            'permissions' => dcCore::app()->auth->makePermissions([
-                dcAuth::PERMISSION_CONTENT_ADMIN,
-            ]),
-        ]);
-    }
-}
-
-// Public behaviours
-
-class aubergePublicBehaviors
-{
-    public static function coreBlogGetComments($rs)
-    {
-        $rs->extend('rsAubergeExtCommentPublic');
-    }
-}
-
-class rsAubergeExtCommentPublic extends rsExtComment
-{
-    /**
-    Returns whether comment is from the post author.
-
-    @param    rs    Invisible parameter
-    @return    <b>boolean</b>
-     */
-    public static function isMe($rs)
-    {
-        return
-        $rs->comment_email && $rs->comment_email == $rs->user_email;
-    }
-}
-
-// URL handlers
-
-class aubergeUrlHandlers extends dcUrlHandlers
-{
-    /**
-     * URL Handler for single-page archive with redirect to page anchor if necessary
-     *
-     * @param      <type>  $args   The arguments
-     */
-    public static function archive($args)
-    {
-        $anchor = '';
-        if (preg_match('|^/(\d{4})/(\d{2})$|', $args, $m)) {
-            $anchor = '#Y' . $m[1] . '-M' . $m[2];
-            Http::redirect(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('archive') . $anchor);
-        }
-        self::serveDocument('archive.html');
     }
 }

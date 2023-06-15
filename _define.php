@@ -14,7 +14,7 @@ $this->registerModule(
     'Auberge des blogueurs',
     'Des vis et des boulons',
     'Franck Paul',
-    '1.0',
+    '2.0',
     [
         'requires'    => [['core', '2.26']],
         'permissions' => dcCore::app()->auth->makePermissions([

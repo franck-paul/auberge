@@ -10,11 +10,14 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\auberge;
 
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\File\Path;
 
-class aubergeUtils
+class CoreHelper
 {
     private static bool $loaded      = false;
     private static ?string $var_path = null;

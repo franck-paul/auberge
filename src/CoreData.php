@@ -10,9 +10,24 @@
  * @copyright Franck Paul carnet.franck.paul@gmail.com
  * @copyright GPL-2.0 https://www.gnu.org/licenses/gpl-2.0.html
  */
-class aubergeData
+declare(strict_types=1);
+
+namespace Dotclear\Plugin\auberge;
+
+use dcCore;
+
+class CoreData
 {
-    private static function getStay($core, $user_id, $dt)
+    /**
+     * Gets the user stay.
+     *
+     * @param      dcCore  $core     The core
+     * @param      mixed   $user_id  The user identifier
+     * @param      mixed   $dt       The date
+     *
+     * @return     mixed  The user stay (or false).
+     */
+    private static function getStay(dcCore $core, $user_id, $dt)
     {
         if ($dt === null) {
             return false;
@@ -38,12 +53,13 @@ class aubergeData
     /**
      * Gets the user room.
      *
-     * @param      <type>  $core     The core
-     * @param      <type>  $user_id  The user identifier
+     * @param      dcCore  $core     The core
+     * @param      mixed   $user_id  The user identifier
+     * @param      mixed   $dt       The date
      *
-     * @return     <type>  The user room.
+     * @return     mixed  The user room.
      */
-    public static function getUserRoom($core, $user_id, $dt = null)
+    public static function getUserRoom(dcCore $core, $user_id, $dt = null)
     {
         if ($dt !== null) {
             $stay = self::getStay(dcCore::app(), $user_id, $dt);
@@ -64,17 +80,18 @@ class aubergeData
     /**
      * Gets the user staff role.
      *
-     * @param      <type>  $core     The core
-     * @param      <type>  $user_id  The user identifier
+     * @param      dcCore  $core     The core
+     * @param      mixed   $user_id  The user identifier
+     * @param      mixed   $dt       The date
      *
-     * @return     <type>  The user staff role.
+     * @return     mixed  The user staff role.
      */
-    public static function getUserStaffRole($core, $user_id, $dt = null)
+    public static function getUserStaffRole(dcCore $core, $user_id, $dt = null)
     {
         if ($dt !== null) {
             $stay = self::getStay(dcCore::app(), $user_id, $dt);
             if ($stay !== false) {
-                return aubergeUtils::getIdPosition($user_id, $stay['position']);
+                return CoreHelper::getIdPosition($user_id, $stay['position']);
             }
         }
 
@@ -84,18 +101,19 @@ class aubergeData
 
         $rs = dcCore::app()->con->select($sql);
 
-        return aubergeUtils::getIdPosition($user_id, $rs->staff_role);
+        return CoreHelper::getIdPosition($user_id, $rs->staff_role);
     }
 
     /**
      * Gets the user check-in date.
      *
-     * @param      <type>  $core     The core
-     * @param      <type>  $user_id  The user identifier
+     * @param      dcCore  $core     The core
+     * @param      mixed   $user_id  The user identifier
+     * @param      mixed   $dt       The date
      *
-     * @return     <type>  The user check-in date.
+     * @return     mixed  The user check-in date.
      */
-    public static function getUserCheckIn($core, $user_id, $dt = null)
+    public static function getUserCheckIn(dcCore $core, $user_id, $dt = null)
     {
         if ($dt !== null) {
             $stay = self::getStay(dcCore::app(), $user_id, $dt);
@@ -116,12 +134,13 @@ class aubergeData
     /**
      * Gets the user check-out date.
      *
-     * @param      <type>  $core     The core
-     * @param      <type>  $user_id  The user identifier
+     * @param      dcCore  $core     The core
+     * @param      mixed   $user_id  The user identifier
+     * @param      mixed   $dt       The date
      *
-     * @return     <type>  The user check-out date.
+     * @return     mixed  The user check-out date.
      */
-    public static function getUserCheckOut($core, $user_id, $dt = null)
+    public static function getUserCheckOut(dcCore $core, $user_id, $dt = null)
     {
         if ($dt !== null) {
             $stay = self::getStay(dcCore::app(), $user_id, $dt);
@@ -142,12 +161,12 @@ class aubergeData
     /**
      * Gets the user stays (JSON encoded in db).
      *
-     * @param      <type>  $core     The core
-     * @param      <type>  $user_id  The user identifier
+     * @param      dcCore  $core     The core
+     * @param      mixed   $user_id  The user identifier
      *
      * @return     array  The user stays.
      */
-    public static function getUserStays($core, $user_id)
+    public static function getUserStays(dcCore $core, $user_id)
     {
         $sql = 'SELECT U.stays ' .
         'FROM ' . dcCore::app()->prefix . 'user U ' .
