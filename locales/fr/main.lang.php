@@ -16,7 +16,7 @@ L10n::$locales['Check-in'] = 'Arrivée';
 L10n::$locales['Check-out'] = 'Départ';
 L10n::$locales['Staff role'] = 'Role';
 L10n::$locales['%Y-%m-%d'] = '%d-%m-%Y';
-L10n::$locales['Auberge'] = '';
+L10n::$locales['Auberge'] = 'Auberge';
 L10n::$locales['Room number:'] = 'Numéro de chambre :';
 L10n::$locales['0 = not set, 1 to 999 = residents, 1000+ = staff.'] = '0 = inconnu, 1 à 999 = résidents, 1000+ = membre du personnel';
 L10n::$locales['Staff role:'] = 'Rôle :';
@@ -34,7 +34,7 @@ L10n::$locales['You stay in the hostel from <strong>%s</strong> to <strong>%s</s
 L10n::$locales['The email you use for this game is: <strong>%s</strong> (it will be known only to innkeepers).'] = 'L\'email que vous utilisez pour le jeu est : <strong>%s</strong> (il ne sera connu que des aubergistes).';
 L10n::$locales['<a href="%s">Contact the organizers of the game</a>'] = '<a href="%s">Contacter les organisatrices du jeu</a>';
 L10n::$locales['<a href="%s">Forum</a>'] = '<a href="%s">Forum</a>';
-L10n::$locales['auberge'] = '';
-L10n::$locales['Staff'] = '';
+L10n::$locales['auberge'] = 'auberge';
+L10n::$locales['Staff'] = 'Staff';
 L10n::$locales['Staff member'] = 'Membre du personnel';
 L10n::$locales['Room %s'] = 'Chambre %s';
