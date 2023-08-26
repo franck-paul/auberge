@@ -17,7 +17,7 @@ namespace Dotclear\Plugin\auberge;
 use ArrayObject;
 use dcAuth;
 use dcCore;
-use dcPage;
+use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 use form;
@@ -30,7 +30,7 @@ class BackendBehaviors
     {
         // Ajout feuille de style spécifique
         echo
-        dcPage::cssModuleLoad(My::id() . '/css/admin.css', 'screen', dcCore::app()->getVersion(My::id()));
+        My::cssLoad('admin.css');
 
         if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_CONTENT_ADMIN,
@@ -38,7 +38,7 @@ class BackendBehaviors
         } else {
             // Ajout feuille de style spécifique non admin
             echo
-            dcPage::cssModuleLoad(My::id() . '/css/admin-usage.css', 'screen', dcCore::app()->getVersion(My::id()));
+            My::cssLoad('admin-usage.css');
         }
 
         // Ajout favicon spécifique
@@ -117,7 +117,6 @@ class BackendBehaviors
     /**
      * Add room column header in user's list
      *
-     * @param                   $core   The core
      * @param      MetaRecord     $rs     users records
      * @param      array        $cols   The cols
      */
@@ -132,7 +131,6 @@ class BackendBehaviors
     /**
      * Add room number cell in user's list
      *
-     * @param                   $core   The core
      * @param      MetaRecord     $rs     current user record
      * @param      array        $cols   The cols
      */
@@ -176,7 +174,7 @@ class BackendBehaviors
 
         echo
         '<div class="fieldset"><h5 id="auberge">' .
-        '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
+        '<img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
         '<p class="field"><label for="user_room_id">' . __('Room number:') . '</label> ' .
         form::number('user_room_id', [
             'min'     => 0,
@@ -237,7 +235,7 @@ class BackendBehaviors
         $title = __('Welcome to the hostel %s!');
 
         // Title: Pseudo
-        $ret .= '<h3>' . '<img src="' . urldecode(dcPage::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
+        $ret .= '<h3>' . '<img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
         sprintf($title, dcCore::app()->auth->getInfo('user_displayname')) . '</h3>';
 
         // Stays

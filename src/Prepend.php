@@ -15,25 +15,22 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Prepend extends dcNsProcess
+class Prepend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::PREPEND);
-
-        return static::$init;
+        return self::status(My::checkContext(My::PREPEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
-        dcCore::app()->url->register('archive', 'archive', '^archive(/.+)?$', [FrontendUrl::class, 'archive']);
+        dcCore::app()->url->register('archive', 'archive', '^archive(/.+)?$', FrontendUrl::archive(...));
 
         if (dcCore::app()->plugins->moduleExists('Uninstaller')) {
             // Add cleaners to Uninstaller

@@ -15,47 +15,44 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Frontend extends dcNsProcess
+class Frontend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::FRONTEND);
-
-        return static::$init;
+        return self::status(My::checkContext(My::FRONTEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         // Don't do things in frontend if plugin disabled
-        $settings = dcCore::app()->blog->settings->get(My::id());
+        $settings = My::settings();
         if (!(bool) $settings->active) {
             return false;
         }
 
         // Public behaviours
         dcCore::app()->addBehaviors([
-            'coreBlogGetComments' => [FrontendBehaviors::class, 'coreBlogGetComments'],
+            'coreBlogGetComments' => FrontendBehaviors::coreBlogGetComments(...),
 
-            'publicBeforeContentFilterV2' => [FrontendBehaviors::class, 'publicBeforeContentFilter'],
+            'publicBeforeContentFilterV2' => FrontendBehaviors::publicBeforeContentFilter(...),
         ]);
 
         // Public template tags
-        dcCore::app()->tpl->addValue('AuthorRoom', [FrontendTemplate::class, 'authorRoom']);
-        dcCore::app()->tpl->addValue('AuthorRoomClass', [FrontendTemplate::class, 'authorRoomClass']);
-        dcCore::app()->tpl->addValue('AuthorCheckIn', [FrontendTemplate::class, 'authorCheckIn']);
-        dcCore::app()->tpl->addValue('AuthorCheckOut', [FrontendTemplate::class, 'AuthorCheckOut']);
-        dcCore::app()->tpl->addValue('AuthorCheckStays', [FrontendTemplate::class, 'AuthorCheckStays']);
-        dcCore::app()->tpl->addValue('CommentIfEven', [FrontendTemplate::class, 'CommentIfEven']);
-        dcCore::app()->tpl->addValue('PingIfEven', [FrontendTemplate::class, 'PingIfEven']);
-        dcCore::app()->tpl->addValue('BlogShortname', [FrontendTemplate::class, 'BlogShortname']);
-        dcCore::app()->tpl->addValue('TagLabel', [FrontendTemplate::class, 'TagLabel']);
+        dcCore::app()->tpl->addValue('AuthorRoom', FrontendTemplate::authorRoom(...));
+        dcCore::app()->tpl->addValue('AuthorRoomClass', FrontendTemplate::authorRoomClass(...));
+        dcCore::app()->tpl->addValue('AuthorCheckIn', FrontendTemplate::authorCheckIn(...));
+        dcCore::app()->tpl->addValue('AuthorCheckOut', FrontendTemplate::AuthorCheckOut(...));
+        dcCore::app()->tpl->addValue('AuthorCheckStays', FrontendTemplate::AuthorCheckStays(...));
+        dcCore::app()->tpl->addValue('CommentIfEven', FrontendTemplate::CommentIfEven(...));
+        dcCore::app()->tpl->addValue('PingIfEven', FrontendTemplate::PingIfEven(...));
+        dcCore::app()->tpl->addValue('BlogShortname', FrontendTemplate::BlogShortname(...));
+        dcCore::app()->tpl->addValue('TagLabel', FrontendTemplate::TagLabel(...));
 
         return true;
     }

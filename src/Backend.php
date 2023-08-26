@@ -15,48 +15,45 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use dcCore;
-use dcNsProcess;
+use Dotclear\Core\Process;
 
-class Backend extends dcNsProcess
+class Backend extends Process
 {
-    protected static $init = false; /** @deprecated since 2.27 */
     public static function init(): bool
     {
-        static::$init = My::checkContext(My::BACKEND);
-
         // dead but useful code, in order to have translations
         __('auberge') . __('auberge');
 
-        return static::$init;
+        return self::status(My::checkContext(My::BACKEND));
     }
 
     public static function process(): bool
     {
-        if (!static::$init) {
+        if (!self::status()) {
             return false;
         }
 
         dcCore::app()->addBehaviors([
             // Generic admin behavior callbacks
-            'adminPageHTMLHead' => [BackendBehaviors::class, 'adminPageHTMLHead'],
+            'adminPageHTMLHead' => BackendBehaviors::adminPageHTMLHead(...),
 
-            'adminUserListHeaderV2' => [BackendBehaviors::class, 'adminUserListHeader'],
-            'adminUserListValueV2'  => [BackendBehaviors::class, 'adminUserListValue'],
+            'adminUserListHeaderV2' => BackendBehaviors::adminUserListHeader(...),
+            'adminUserListValueV2'  => BackendBehaviors::adminUserListValue(...),
 
             // Add behaviour callbacks for user form
-            'adminUserForm'         => [BackendBehaviors::class, 'adminUserForm'],
-            'adminBeforeUserCreate' => [BackendBehaviors::class, 'adminBeforeUserUpdate'],
-            'adminBeforeUserUpdate' => [BackendBehaviors::class, 'adminBeforeUserUpdate'],
+            'adminUserForm'         => BackendBehaviors::adminUserForm(...),
+            'adminBeforeUserCreate' => BackendBehaviors::adminBeforeUserUpdate(...),
+            'adminBeforeUserUpdate' => BackendBehaviors::adminBeforeUserUpdate(...),
 
             // Add behaviour callbacks for post form
-            'adminPostFormItems' => [BackendBehaviors::class, 'adminPostFormItems'],
+            'adminPostFormItems' => BackendBehaviors::adminPostFormItems(...),
 
             // Dashboard behaviours
-            'adminDashboardContentsV2' => [BackendBehaviors::class, 'adminDashboardContents'],
+            'adminDashboardContentsV2' => BackendBehaviors::adminDashboardContents(...),
 
             // Add behaviour callbacks for user lists
-            'adminGetUsers'         => [BackendBehaviors::class, 'adminGetUsers'],
-            'adminUsersSortbyCombo' => [BackendBehaviors::class, 'adminUsersSortbyCombo'],
+            'adminGetUsers'         => BackendBehaviors::adminGetUsers(...),
+            'adminUsersSortbyCombo' => BackendBehaviors::adminUsersSortbyCombo(...),
         ]);
 
         return true;
