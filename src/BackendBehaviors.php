@@ -17,6 +17,7 @@ namespace Dotclear\Plugin\auberge;
 use ArrayObject;
 use dcAuth;
 use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
@@ -34,7 +35,7 @@ class BackendBehaviors
 
         if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id))) {
+        ]), App::blog()->id()))) {
         } else {
             // Ajout feuille de style spécifique non admin
             echo
@@ -53,7 +54,7 @@ class BackendBehaviors
     {
         if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id))) {
+        ]), App::blog()->id()))) {
             // No change for super-admin or blog's admins
             return;
         }
@@ -222,11 +223,11 @@ class BackendBehaviors
         $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
         if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id))) {
-            $contact_url = dcCore::app()->blog->url . dcCore::app()->url->getURLFor('contactme');
+        ]), App::blog()->id()))) {
+            $contact_url = App::blog()->url() . dcCore::app()->url->getURLFor('contactme');
         } else {
             // URL is not available in dashboard for non-admin, so ugly code !!!
-            $contact_url = dcCore::app()->blog->url . 'contact';
+            $contact_url = App::blog()->url() . 'contact';
         }
 
         // Compose module content
@@ -298,7 +299,7 @@ class BackendBehaviors
         // Other actions on Dashboard
         if (!dcCore::app()->auth->isSuperAdmin() && !dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
             dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]), dcCore::app()->blog->id)) {
+        ]), App::blog()->id())) {
             // Remove uick entry from Dashboard
             dcCore::app()->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
         }

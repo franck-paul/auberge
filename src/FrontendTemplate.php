@@ -16,6 +16,7 @@ namespace Dotclear\Plugin\auberge;
 
 use ArrayObject;
 use dcCore;
+use Dotclear\App;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
 
@@ -99,7 +100,7 @@ class FrontendTemplate
         if (!empty($attr['format'])) {
             $format = addslashes($attr['format']);
         } else {
-            $format = dcCore::app()->blog->settings->system->date_format;
+            $format = App::blog()->settings()->system->date_format;
         }
 
         $list  = !empty($attr['list']) ? $attr['list'] : __('<div>%s</div>');
@@ -145,7 +146,7 @@ class FrontendTemplate
         if (!empty($attr['format'])) {
             $format = addslashes($attr['format']);
         } else {
-            $format = dcCore::app()->blog->settings->system->date_format;
+            $format = App::blog()->settings()->system->date_format;
         }
 
         $f = dcCore::app()->tpl->getFilters($attr);
@@ -169,7 +170,7 @@ class FrontendTemplate
         if (!empty($attr['format'])) {
             $format = addslashes($attr['format']);
         } else {
-            $format = dcCore::app()->blog->settings->system->date_format;
+            $format = App::blog()->settings()->system->date_format;
         }
 
         $f = dcCore::app()->tpl->getFilters($attr);
@@ -226,7 +227,7 @@ class FrontendTemplate
     {
         $f = dcCore::app()->tpl->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : dcCore::app()->blog->id)') . '; ?>';
+        return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : App::blog()->id())') . '; ?>';
     }
 
     /**

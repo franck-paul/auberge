@@ -15,6 +15,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use dcCore;
+use Dotclear\App;
 use Dotclear\Module\MyPlugin;
 
 /**
@@ -37,7 +38,7 @@ class My extends MyPlugin
                     // Check specific permission
                     && dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
                         dcCore::app()->auth::PERMISSION_CONTENT_ADMIN,
-                    ]), dcCore::app()->blog->id),
+                    ]), App::blog()->id()),
 
             default => null
         };

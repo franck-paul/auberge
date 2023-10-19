@@ -16,6 +16,7 @@ namespace Dotclear\Plugin\auberge;
 
 use dcCore;
 use dcUrlHandlers;
+use Dotclear\App;
 use Dotclear\Helper\Network\Http;
 
 class FrontendUrl extends dcUrlHandlers
@@ -30,7 +31,7 @@ class FrontendUrl extends dcUrlHandlers
         $anchor = '';
         if (preg_match('|^/(\d{4})/(\d{2})$|', $args, $m)) {
             $anchor = '#Y' . $m[1] . '-M' . $m[2];
-            Http::redirect(dcCore::app()->blog->url . dcCore::app()->url->getURLFor('archive') . $anchor);
+            Http::redirect(App::blog()->url() . dcCore::app()->url->getURLFor('archive') . $anchor);
         }
         self::serveDocument('archive.html');
     }
