@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\auberge;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 use Dotclear\Database\Structure;
 use Exception;
@@ -35,7 +35,7 @@ class Install extends Process
         try {
             // Init
             // Database schema
-            $new_schema = new Structure(dcCore::app()->con, dcCore::app()->prefix);
+            $new_schema = new Structure(App::con(), App::con()->prefix());
             $new_schema->user
                 ->room_id('integer', 0, true, 0)
                 ->staff_role('varchar', 255, true, null)
@@ -44,10 +44,10 @@ class Install extends Process
                 ->stays('text', 0, true, null);
 
             // Schema installation
-            $current_schema = new Structure(dcCore::app()->con, dcCore::app()->prefix);
+            $current_schema = new Structure(App::con(), App::con()->prefix());
             $current_schema->synchronize($new_schema);
         } catch (Exception $e) {
-            dcCore::app()->error->add($e->getMessage());
+            App::error()->add($e->getMessage());
         }
 
         return true;

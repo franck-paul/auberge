@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\auberge;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Prepend extends Process
@@ -30,16 +30,16 @@ class Prepend extends Process
             return false;
         }
 
-        dcCore::app()->url->register('archive', 'archive', '^archive(/.+)?$', FrontendUrl::archive(...));
+        App::url()->register('archive', 'archive', '^archive(/.+)?$', FrontendUrl::archive(...));
 
-        if (dcCore::app()->plugins->moduleExists('Uninstaller')) {
-            // Add cleaners to Uninstaller
-            dcCore::app()->addBehavior('UninstallerCleanersConstruct', function (\Dotclear\Plugin\Uninstaller\CleanersStack $cleaners): void {
+        // Add cleaners to Uninstaller
+        App::behavior()->addBehaviors([
+            'UninstallerCleanersConstruct' => function (\Dotclear\Plugin\Uninstaller\CleanersStack $cleaners): void {
                 $cleaners
                     ->set(new Cleaner\Fields())
                 ;
-            });
-        }
+            },
+        ]);
 
         return true;
     }

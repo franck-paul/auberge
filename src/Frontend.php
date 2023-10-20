@@ -14,7 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\auberge;
 
-use dcCore;
+use Dotclear\App;
 use Dotclear\Core\Process;
 
 class Frontend extends Process
@@ -37,22 +37,22 @@ class Frontend extends Process
         }
 
         // Public behaviours
-        dcCore::app()->addBehaviors([
+        App::behavior()->addBehaviors([
             'coreBlogGetComments' => FrontendBehaviors::coreBlogGetComments(...),
 
             'publicBeforeContentFilterV2' => FrontendBehaviors::publicBeforeContentFilter(...),
         ]);
 
         // Public template tags
-        dcCore::app()->tpl->addValue('AuthorRoom', FrontendTemplate::authorRoom(...));
-        dcCore::app()->tpl->addValue('AuthorRoomClass', FrontendTemplate::authorRoomClass(...));
-        dcCore::app()->tpl->addValue('AuthorCheckIn', FrontendTemplate::authorCheckIn(...));
-        dcCore::app()->tpl->addValue('AuthorCheckOut', FrontendTemplate::AuthorCheckOut(...));
-        dcCore::app()->tpl->addValue('AuthorCheckStays', FrontendTemplate::AuthorCheckStays(...));
-        dcCore::app()->tpl->addValue('CommentIfEven', FrontendTemplate::CommentIfEven(...));
-        dcCore::app()->tpl->addValue('PingIfEven', FrontendTemplate::PingIfEven(...));
-        dcCore::app()->tpl->addValue('BlogShortname', FrontendTemplate::BlogShortname(...));
-        dcCore::app()->tpl->addValue('TagLabel', FrontendTemplate::TagLabel(...));
+        App::frontend()->template()->addValue('AuthorRoom', FrontendTemplate::authorRoom(...));
+        App::frontend()->template()->addValue('AuthorRoomClass', FrontendTemplate::authorRoomClass(...));
+        App::frontend()->template()->addValue('AuthorCheckIn', FrontendTemplate::authorCheckIn(...));
+        App::frontend()->template()->addValue('AuthorCheckOut', FrontendTemplate::AuthorCheckOut(...));
+        App::frontend()->template()->addValue('AuthorCheckStays', FrontendTemplate::AuthorCheckStays(...));
+        App::frontend()->template()->addValue('CommentIfEven', FrontendTemplate::CommentIfEven(...));
+        App::frontend()->template()->addValue('PingIfEven', FrontendTemplate::PingIfEven(...));
+        App::frontend()->template()->addValue('BlogShortname', FrontendTemplate::BlogShortname(...));
+        App::frontend()->template()->addValue('TagLabel', FrontendTemplate::TagLabel(...));
 
         return true;
     }

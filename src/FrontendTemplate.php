@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use ArrayObject;
-use dcCore;
 use Dotclear\App;
 use Dotclear\Helper\Date;
 use Dotclear\Helper\Html\Html;
@@ -33,24 +32,24 @@ class FrontendTemplate
      */
     public static function AuthorRoom(ArrayObject $attr)
     {
-        $f    = dcCore::app()->tpl->getFilters($attr);
+        $f    = App::frontend()->template()->getFilters($attr);
         $role = isset($attr['role']);
 
         return '<?php ' . "\n" .
-            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
-            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
-            'dcCore::app()->ctx->room_id = ' . CoreData::class . '::getUserRoom(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
-            'dcCore::app()->ctx->staff_role = ' . CoreData::class . '::getUserStaffRole(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
-            'dcCore::app()->ctx->is_staff = (dcCore::app()->ctx->room_id > 999);' . "\n" .
-            'if (dcCore::app()->ctx->is_staff) {' . "\n" .
-            '  if (' . ($role ? 'true' : 'false') . ' && dcCore::app()->ctx->staff_role) {' . "\n" .
-            '    $tmp = dcCore::app()->ctx->staff_role;' . "\n" .
+            'App::frontend()->context()->player_id = App::frontend()->context()->exists("users") ? App::frontend()->context()->users->user_id : App::frontend()->context()->posts->user_id;' . "\n" .
+            '$dt = App::frontend()->context()->exists("posts") ? App::frontend()->context()->posts->post_dt : null;' . "\n" .
+            'App::frontend()->context()->room_id = ' . CoreData::class . '::getUserRoom(App::frontend()->context()->player_id, $dt);' . "\n" .
+            'App::frontend()->context()->staff_role = ' . CoreData::class . '::getUserStaffRole(App::frontend()->context()->player_id, $dt);' . "\n" .
+            'App::frontend()->context()->is_staff = (App::frontend()->context()->room_id > 999);' . "\n" .
+            'if (App::frontend()->context()->is_staff) {' . "\n" .
+            '  if (' . ($role ? 'true' : 'false') . ' && App::frontend()->context()->staff_role) {' . "\n" .
+            '    $tmp = App::frontend()->context()->staff_role;' . "\n" .
             '  } else {' . "\n" .
-            '    $tmp = (dcCore::app()->ctx->archives ? \'' . __('Staff') . '\' : \'' . __('Staff member') . '\');' . "\n" .
+            '    $tmp = (App::frontend()->context()->archives ? \'' . __('Staff') . '\' : \'' . __('Staff member') . '\');' . "\n" .
             '  }' . "\n" .
             '} else {' . "\n" .
-            '  if (dcCore::app()->ctx->room_id) {' . "\n" .
-            '      $tmp = sprintf(\'' . __('Room %s') . '\', dcCore::app()->ctx->room_id);' . "\n" .
+            '  if (App::frontend()->context()->room_id) {' . "\n" .
+            '      $tmp = sprintf(\'' . __('Room %s') . '\', App::frontend()->context()->room_id);' . "\n" .
             '  } else {' . "\n" .
             '      $tmp = \'\';' . "\n" .
             '  }' . "\n" .
@@ -69,18 +68,18 @@ class FrontendTemplate
      */
     public static function AuthorRoomClass(ArrayObject $attr)
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php ' . "\n" .
-            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
-            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
-            'dcCore::app()->ctx->room_id = ' . CoreData::class . '::getUserRoom(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
-            'dcCore::app()->ctx->is_staff = (dcCore::app()->ctx->room_id > 999);' . "\n" .
-            'if (dcCore::app()->ctx->is_staff) {' . "\n" .
-            '  $cls = sprintf(\'staff staff_%s\', dcCore::app()->ctx->room_id - 999);' . "\n" .
+            'App::frontend()->context()->player_id = App::frontend()->context()->exists("users") ? App::frontend()->context()->users->user_id : App::frontend()->context()->posts->user_id;' . "\n" .
+            '$dt = App::frontend()->context()->exists("posts") ? App::frontend()->context()->posts->post_dt : null;' . "\n" .
+            'App::frontend()->context()->room_id = ' . CoreData::class . '::getUserRoom(App::frontend()->context()->player_id, $dt);' . "\n" .
+            'App::frontend()->context()->is_staff = (App::frontend()->context()->room_id > 999);' . "\n" .
+            'if (App::frontend()->context()->is_staff) {' . "\n" .
+            '  $cls = sprintf(\'staff staff_%s\', App::frontend()->context()->room_id - 999);' . "\n" .
             '} else {' . "\n" .
-            '  if (dcCore::app()->ctx->room_id) {' . "\n" .
-            '    $cls = sprintf(\'room room_%s\', dcCore::app()->ctx->room_id);' . "\n" .
+            '  if (App::frontend()->context()->room_id) {' . "\n" .
+            '    $cls = sprintf(\'room room_%s\', App::frontend()->context()->room_id);' . "\n" .
             '  } else {' . "\n" .
             '    $cls = \'\';' . "\n" .
             '  }' . "\n" .
@@ -108,24 +107,24 @@ class FrontendTemplate
         $staff = !empty($attr['staff']) ? $attr['staff'] : __('as %s');
         $room  = !empty($attr['room']) ? $attr['room'] : __('in room %s');
 
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php ' . "\n" .
-            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
-            'dcCore::app()->ctx->stays = ' . CoreData::class . '::getUserStays(dcCore::app(), dcCore::app()->ctx->player_id);' . "\n" .
+            'App::frontend()->context()->player_id = App::frontend()->context()->exists("users") ? App::frontend()->context()->users->user_id : App::frontend()->context()->posts->user_id;' . "\n" .
+            'App::frontend()->context()->stays = ' . CoreData::class . '::getUserStays(App::frontend()->context()->player_id);' . "\n" .
             '$ret = "";' . "\n" .
-            'if (dcCore::app()->ctx->stays) {' . "\n" .
-            '  foreach(dcCore::app()->ctx->stays as dcCore::app()->ctx->stay) {' . "\n" .
-            '    if (dcCore::app()->ctx->stay[\'room_id\'] > 999) {' . "\n" .
-            '      $info = sprintf(\'' . addslashes($staff) . '\', ' . CoreHelper::class . '::getIdPosition(dcCore::app()->ctx->player_id, dcCore::app()->ctx->stay[\'position\']));' . "\n" .
+            'if (App::frontend()->context()->stays) {' . "\n" .
+            '  foreach(App::frontend()->context()->stays as App::frontend()->context()->stay) {' . "\n" .
+            '    if (App::frontend()->context()->stay[\'room_id\'] > 999) {' . "\n" .
+            '      $info = sprintf(\'' . addslashes($staff) . '\', ' . CoreHelper::class . '::getIdPosition(App::frontend()->context()->player_id, App::frontend()->context()->stay[\'position\']));' . "\n" .
             '    } else {' . "\n" .
-            '      $info = sprintf(\'' . addslashes($room) . '\', dcCore::app()->ctx->stay[\'room_id\']);' . "\n" .
+            '      $info = sprintf(\'' . addslashes($room) . '\', App::frontend()->context()->stay[\'room_id\']);' . "\n" .
             '    }' . "\n" .
-            '    if (strtotime(dcCore::app()->ctx->stay[\'check_in\']) <= time()) {' . "\n" .
+            '    if (strtotime(App::frontend()->context()->stay[\'check_in\']) <= time()) {' . "\n" .
             '      $ret .= sprintf(' . "\n" .
             '        \'' . addslashes($item) . '\',' . "\n" .
-            Date::class . '::dt2str(\'' . $format . '\', dcCore::app()->ctx->stay[\'check_in\']),' . "\n" .
-            Date::class . '::dt2str(\'' . $format . '\', dcCore::app()->ctx->stay[\'check_out\']),' . "\n" .
+            Date::class . '::dt2str(\'' . $format . '\', App::frontend()->context()->stay[\'check_in\']),' . "\n" .
+            Date::class . '::dt2str(\'' . $format . '\', App::frontend()->context()->stay[\'check_out\']),' . "\n" .
             '        $info' . "\n" .
             '      );' . "\n" .
             '    }' . "\n" .
@@ -149,13 +148,13 @@ class FrontendTemplate
             $format = App::blog()->settings()->system->date_format;
         }
 
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php ' . "\n" .
-            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
-            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
-            'dcCore::app()->ctx->check_in = ' . CoreData::class . '::getUserCheckIn(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
-            'echo ' . sprintf($f, Date::class . '::dt2str(\'' . $format . '\', dcCore::app()->ctx->check_in)') . '; ?>';
+            'App::frontend()->context()->player_id = App::frontend()->context()->exists("users") ? App::frontend()->context()->users->user_id : App::frontend()->context()->posts->user_id;' . "\n" .
+            '$dt = App::frontend()->context()->exists("posts") ? App::frontend()->context()->posts->post_dt : null;' . "\n" .
+            'App::frontend()->context()->check_in = ' . CoreData::class . '::getUserCheckIn(App::frontend()->context()->player_id, $dt);' . "\n" .
+            'echo ' . sprintf($f, Date::class . '::dt2str(\'' . $format . '\', App::frontend()->context()->check_in)') . '; ?>';
     }
 
     /**
@@ -173,13 +172,13 @@ class FrontendTemplate
             $format = App::blog()->settings()->system->date_format;
         }
 
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php ' . "\n" .
-            'dcCore::app()->ctx->player_id = dcCore::app()->ctx->exists("users") ? dcCore::app()->ctx->users->user_id : dcCore::app()->ctx->posts->user_id;' . "\n" .
-            '$dt = dcCore::app()->ctx->exists("posts") ? dcCore::app()->ctx->posts->post_dt : null;' . "\n" .
-            'dcCore::app()->ctx->check_out = ' . CoreData::class . '::getUserCheckOut(dcCore::app(), dcCore::app()->ctx->player_id, $dt);' . "\n" .
-            'echo ' . sprintf($f, Date::class . '::dt2str(\'' . $format . '\', dcCore::app()->ctx->check_out)') . '; ?>';
+            'App::frontend()->context()->player_id = App::frontend()->context()->exists("users") ? App::frontend()->context()->users->user_id : App::frontend()->context()->posts->user_id;' . "\n" .
+            '$dt = App::frontend()->context()->exists("posts") ? App::frontend()->context()->posts->post_dt : null;' . "\n" .
+            'App::frontend()->context()->check_out = ' . CoreData::class . '::getUserCheckOut(App::frontend()->context()->player_id, $dt);' . "\n" .
+            'echo ' . sprintf($f, Date::class . '::dt2str(\'' . $format . '\', App::frontend()->context()->check_out)') . '; ?>';
     }
 
     /**
@@ -195,7 +194,7 @@ class FrontendTemplate
         $ret = Html::escapeHTML($ret);
 
         return
-        '<?php if (dcCore::app()->ctx->comments->index()) { ' .
+        '<?php if (App::frontend()->context()->comments->index()) { ' .
         "echo '" . addslashes($ret) . "'; } ?>";
     }
 
@@ -212,7 +211,7 @@ class FrontendTemplate
         $ret = Html::escapeHTML($ret);
 
         return
-        '<?php if (dcCore::app()->ctx->pings->index()) { ' .
+        '<?php if (App::frontend()->context()->pings->index()) { ' .
         "echo '" . addslashes($ret) . "'; } ?>";
     }
 
@@ -225,7 +224,7 @@ class FrontendTemplate
      */
     public static function BlogShortname(ArrayObject $attr)
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
         return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : App::blog()->id())') . '; ?>';
     }
@@ -239,8 +238,8 @@ class FrontendTemplate
      */
     public static function TagLabel(ArrayObject $attr)
     {
-        $f = dcCore::app()->tpl->getFilters($attr);
+        $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, CoreHelper::class . '::getTagLabel(dcCore::app()->ctx->meta->meta_id)') . '; ?>';
+        return '<?php echo ' . sprintf($f, CoreHelper::class . '::getTagLabel(App::frontend()->context()->meta->meta_id)') . '; ?>';
     }
 }

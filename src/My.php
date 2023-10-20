@@ -14,7 +14,6 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\auberge;
 
-use dcCore;
 use Dotclear\App;
 use Dotclear\Module\MyPlugin;
 
@@ -34,10 +33,10 @@ class My extends MyPlugin
     {
         return match ($context) {
             self::MENU,
-            self::MANAGE => defined('DC_CONTEXT_ADMIN')
+            self::MANAGE => App::task()->checkContext('BACKEND')
                     // Check specific permission
-                    && dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-                        dcCore::app()->auth::PERMISSION_CONTENT_ADMIN,
+                    && App::blog() && App::auth()->check(App::auth()->makePermissions([
+                        App::auth()::PERMISSION_CONTENT_ADMIN,
                     ]), App::blog()->id()),
 
             default => null

@@ -15,8 +15,6 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use ArrayObject;
-use dcAuth;
-use dcCore;
 use Dotclear\App;
 use Dotclear\Core\Backend\Page;
 use Dotclear\Helper\Date;
@@ -33,8 +31,8 @@ class BackendBehaviors
         echo
         My::cssLoad('admin.css');
 
-        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_CONTENT_ADMIN,
+        if (App::auth()->isSuperAdmin() || (App::blog() && App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id()))) {
         } else {
             // Ajout feuille de style spécifique non admin
@@ -43,7 +41,7 @@ class BackendBehaviors
         }
 
         // Ajout favicon spécifique
-        if (dcCore::app()->auth->user_prefs->interface->hide_std_favicon) {
+        if (App::auth()->prefs()->interface->hide_std_favicon) {
             echo
                 '<link rel="icon" type="image/png" href="favicon.png" />' . "\n" .
                 '<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />' . "\n";
@@ -52,8 +50,8 @@ class BackendBehaviors
 
     public static function adminPostFormItems($main, $sidebar, $post)
     {
-        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_CONTENT_ADMIN,
+        if (App::auth()->isSuperAdmin() || (App::blog() && App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id()))) {
             // No change for super-admin or blog's admins
             return;
@@ -143,10 +141,10 @@ class BackendBehaviors
             $check_in  = $rs->check_in;
             $check_out = $rs->check_out;
         } else {
-            $room      = CoreData::getUserRoom(dcCore::app(), $rs->user_id);
-            $role      = CoreData::getUserStaffRole(dcCore::app(), $rs->user_id);
-            $check_in  = CoreData::getUserCheckIn(dcCore::app(), $rs->user_id);
-            $check_out = CoreData::getUserCheckOut(dcCore::app(), $rs->user_id);
+            $room      = CoreData::getUserRoom($rs->user_id);
+            $role      = CoreData::getUserStaffRole($rs->user_id);
+            $check_in  = CoreData::getUserCheckIn($rs->user_id);
+            $check_out = CoreData::getUserCheckOut($rs->user_id);
         }
         $cols['room']      = '<td class="nowrap count">' . ($room ?: '') . '</td>';
         $cols['role']      = '<td class="nowrap">' . ($role ?: '') . '</td>';
@@ -162,10 +160,10 @@ class BackendBehaviors
     public static function adminUserForm($rs)
     {
         if ($rs) {
-            $room      = CoreData::getUserRoom(dcCore::app(), $rs->user_id);
-            $role      = CoreData::getUserStaffRole(dcCore::app(), $rs->user_id);
-            $check_in  = CoreData::getUserCheckIn(dcCore::app(), $rs->user_id);
-            $check_out = CoreData::getUserCheckOut(dcCore::app(), $rs->user_id);
+            $room      = CoreData::getUserRoom($rs->user_id);
+            $role      = CoreData::getUserStaffRole($rs->user_id);
+            $check_in  = CoreData::getUserCheckIn($rs->user_id);
+            $check_out = CoreData::getUserCheckOut($rs->user_id);
         } else {
             $room      = 0;
             $role      = '';
@@ -221,10 +219,10 @@ class BackendBehaviors
     {
         // Add modules to the contents stack
         $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
-        if (dcCore::app()->auth->isSuperAdmin() || (dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_CONTENT_ADMIN,
+        if (App::auth()->isSuperAdmin() || (App::blog() && App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id()))) {
-            $contact_url = App::blog()->url() . dcCore::app()->url->getURLFor('contactme');
+            $contact_url = App::blog()->url() . App::url()->getURLFor('contactme');
         } else {
             // URL is not available in dashboard for non-admin, so ugly code !!!
             $contact_url = App::blog()->url() . 'contact';
@@ -237,16 +235,16 @@ class BackendBehaviors
 
         // Title: Pseudo
         $ret .= '<h3>' . '<img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
-        sprintf($title, dcCore::app()->auth->getInfo('user_displayname')) . '</h3>';
+        sprintf($title, App::auth()->getInfo('user_displayname')) . '</h3>';
 
         // Stays
-        $stays = CoreData::getUserStays(dcCore::app(), dcCore::app()->auth->userID());
+        $stays = CoreData::getUserStays(App::auth()->userID());
         if ($stays) {
             foreach ($stays as $stay) {
                 $check_in  = $stay['check_in'];
                 $check_out = $stay['check_out'];
                 $room_id   = $stay['room_id'];
-                $position  = CoreHelper::getIdPosition(dcCore::app()->auth->userID(), $stay['position']);
+                $position  = CoreHelper::getIdPosition(App::auth()->userID(), $stay['position']);
 
                 $is_staff = false;
                 if ($room_id > 0 && $room_id < 1000) {
@@ -282,7 +280,7 @@ class BackendBehaviors
         // User pseudo and email
         $info = sprintf(
             __('The email you use for this game is: <strong>%s</strong> (it will be known only to innkeepers).'),
-            dcCore::app()->auth->getInfo('user_email')
+            App::auth()->getInfo('user_email')
         );
         $ret .= '<p>' . $info . '</p>';
 
@@ -297,11 +295,11 @@ class BackendBehaviors
         $contents[] = new ArrayObject([$ret]);
 
         // Other actions on Dashboard
-        if (!dcCore::app()->auth->isSuperAdmin() && !dcCore::app()->blog && dcCore::app()->auth->check(dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_CONTENT_ADMIN,
+        if (!App::auth()->isSuperAdmin() || !App::blog() || App::auth()->check(App::auth()->makePermissions([
+            App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id())) {
-            // Remove uick entry from Dashboard
-            dcCore::app()->auth->user_prefs->dashboard->put('quickentry', false, 'boolean');
+            // Remove quick entry from Dashboard
+            App::auth()->prefs()->dashboard->put('quickentry', false, 'boolean');
         }
     }
 }

@@ -14,9 +14,9 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\auberge;
 
-use rsExtComment;
+use Dotclear\Schema\Extension\Comment;
 
-class CommentExtensions extends rsExtComment
+class CommentExtensions extends Comment
 {
     /**
      * Returns whether comment is from the post author.

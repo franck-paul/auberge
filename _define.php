@@ -17,13 +17,10 @@ $this->registerModule(
     '2.0',
     [
         'requires'    => [['core', '2.28']],
-        'permissions' => dcCore::app()->auth->makePermissions([
-            dcAuth::PERMISSION_USAGE,
-            dcAuth::PERMISSION_CONTENT_ADMIN,
-        ]),
-        'type'     => 'plugin',
-        'priority' => 1500,
-        'settings' => [
+        'permissions' => 'My',
+        'type'        => 'plugin',
+        'priority'    => 1500,
+        'settings'    => [
         ],
 
         'details'    => 'https://open-time.net/?q=auberge',
