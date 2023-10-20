@@ -14,6 +14,7 @@ declare(strict_types=1);
 
 namespace Dotclear\Plugin\auberge;
 
+use Dotclear\App;
 use Dotclear\Helper\File\Files;
 use Dotclear\Helper\File\Path;
 
@@ -30,7 +31,7 @@ class CoreHelper
             return;
         }
 
-        self::$var_path = Path::real(DC_VAR) . '/blogs/auberge/';
+        self::$var_path = Path::real(App::config()->varRoot()) . '/blogs/auberge/';
         Files::makeDir(self::$var_path, true);
 
         // Load tag → label data

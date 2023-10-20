@@ -135,7 +135,7 @@ class BackendBehaviors
      */
     public static function adminUserListValue($rs, $cols)
     {
-        if (version_compare(DC_VERSION, '2.17-dev', '>=')) {
+        if (version_compare(App::config()->dotclearVersion(), '2.17-dev', '>=')) {
             $room      = $rs->room_id;
             $role      = $rs->staff_role;
             $check_in  = $rs->check_in;
