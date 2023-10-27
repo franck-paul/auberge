@@ -24,11 +24,9 @@ class FrontendBehaviors
      */
     public static function publicBeforeContentFilter(string $tag, array $args)
     {
-        if (isset($args['no_first_aside']) && (int) $args['no_first_aside'] > 0) {
-            if (str_starts_with($args[0], '<aside>')) {
-                // Remove first aside if exists at beginning of string
-                $args[0] = preg_replace('/<aside>(.*)?<\/aside>/msU', '', $args[0], 1);
-            }
+        if (isset($args['no_first_aside']) && (int) $args['no_first_aside'] > 0 && str_starts_with($args[0], '<aside>')) {
+            // Remove first aside if exists at beginning of string
+            $args[0] = preg_replace('/<aside>(.*)?<\/aside>/msU', '', $args[0], 1);
         }
     }
 

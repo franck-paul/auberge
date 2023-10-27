@@ -21,8 +21,11 @@ use Dotclear\Helper\File\Path;
 class CoreHelper
 {
     private static bool $loaded      = false;
+
     private static ?string $var_path = null;
+
     private static $tag_labels;
+
     private static $id_positions;
 
     private static function load()

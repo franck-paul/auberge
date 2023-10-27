@@ -46,8 +46,8 @@ class Install extends Process
             // Schema installation
             $current_schema = new Structure(App::con(), App::con()->prefix());
             $current_schema->synchronize($new_schema);
-        } catch (Exception $e) {
-            App::error()->add($e->getMessage());
+        } catch (Exception $exception) {
+            App::error()->add($exception->getMessage());
         }
 
         return true;

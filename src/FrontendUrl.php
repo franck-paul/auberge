@@ -32,6 +32,7 @@ class FrontendUrl extends Url
             $anchor = '#Y' . $m[1] . '-M' . $m[2];
             Http::redirect(App::blog()->url() . App::url()->getURLFor('archive') . $anchor);
         }
+
         self::serveDocument('archive.html');
     }
 }

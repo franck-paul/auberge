@@ -67,8 +67,7 @@ class CoreData
             }
         }
 
-        $sql = 'SELECT U.room_id ' .
-        'FROM ' . App::con()->prefix() . 'user U ' .
+        $sql = 'SELECT U.room_id FROM ' . App::con()->prefix() . 'user U ' .
         "WHERE U.user_id = '" . App::con()->escape($user_id) . "' ";
 
         $rs = App::con()->select($sql);
@@ -93,8 +92,7 @@ class CoreData
             }
         }
 
-        $sql = 'SELECT U.staff_role ' .
-        'FROM ' . App::con()->prefix() . 'user U ' .
+        $sql = 'SELECT U.staff_role FROM ' . App::con()->prefix() . 'user U ' .
         "WHERE U.user_id = '" . App::con()->escape($user_id) . "' ";
 
         $rs = App::con()->select($sql);
@@ -119,8 +117,7 @@ class CoreData
             }
         }
 
-        $sql = 'SELECT U.check_in ' .
-        'FROM ' . App::con()->prefix() . 'user U ' .
+        $sql = 'SELECT U.check_in FROM ' . App::con()->prefix() . 'user U ' .
         "WHERE U.user_id = '" . App::con()->escape($user_id) . "' ";
 
         $rs = App::con()->select($sql);
@@ -145,8 +142,7 @@ class CoreData
             }
         }
 
-        $sql = 'SELECT U.check_out ' .
-        'FROM ' . App::con()->prefix() . 'user U ' .
+        $sql = 'SELECT U.check_out FROM ' . App::con()->prefix() . 'user U ' .
         "WHERE U.user_id = '" . App::con()->escape($user_id) . "' ";
 
         $rs = App::con()->select($sql);
@@ -163,14 +159,13 @@ class CoreData
      */
     public static function getUserStays($user_id)
     {
-        $sql = 'SELECT U.stays ' .
-        'FROM ' . App::con()->prefix() . 'user U ' .
+        $sql = 'SELECT U.stays FROM ' . App::con()->prefix() . 'user U ' .
         "WHERE U.user_id = '" . App::con()->escape($user_id) . "' ";
 
         $rs = App::con()->select($sql);
         if ($rs->stays) {
             $list = json_decode($rs->stays, true, 512, JSON_THROW_ON_ERROR);
-            usort($list, fn ($a, $b) => ($a['check_out'] > $b['check_out']));
+            usort($list, static fn($a, $b) => $a['check_out'] > $b['check_out']);
 
             return $list;
         }

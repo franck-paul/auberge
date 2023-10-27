@@ -54,9 +54,7 @@ class Fields extends CleanerParent
 
     public function values(): array
     {
-        $res = [];
-
-        return $res;
+        return [];
     }
 
     public function execute(string $action, string $ns): bool

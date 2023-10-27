@@ -96,16 +96,12 @@ class FrontendTemplate
      */
     public static function AuthorCheckStays(ArrayObject $attr)
     {
-        if (!empty($attr['format'])) {
-            $format = addslashes($attr['format']);
-        } else {
-            $format = App::blog()->settings()->system->date_format;
-        }
+        $format = empty($attr['format']) ? App::blog()->settings()->system->date_format : addslashes($attr['format']);
 
-        $list  = !empty($attr['list']) ? $attr['list'] : __('<div>%s</div>');
-        $item  = !empty($attr['item']) ? $attr['item'] : __('<p>From %1$s to %2$s %3$s</p>');
-        $staff = !empty($attr['staff']) ? $attr['staff'] : __('as %s');
-        $room  = !empty($attr['room']) ? $attr['room'] : __('in room %s');
+        $list  = empty($attr['list']) ? __('<div>%s</div>') : $attr['list'];
+        $item  = empty($attr['item']) ? __('<p>From %1$s to %2$s %3$s</p>') : $attr['item'];
+        $staff = empty($attr['staff']) ? __('as %s') : $attr['staff'];
+        $room  = empty($attr['room']) ? __('in room %s') : $attr['room'];
 
         $f = App::frontend()->template()->getFilters($attr);
 
@@ -142,11 +138,7 @@ class FrontendTemplate
      */
     public static function AuthorCheckIn(ArrayObject $attr)
     {
-        if (!empty($attr['format'])) {
-            $format = addslashes($attr['format']);
-        } else {
-            $format = App::blog()->settings()->system->date_format;
-        }
+        $format = empty($attr['format']) ? App::blog()->settings()->system->date_format : addslashes($attr['format']);
 
         $f = App::frontend()->template()->getFilters($attr);
 
@@ -166,11 +158,7 @@ class FrontendTemplate
      */
     public static function AuthorCheckOut(ArrayObject $attr)
     {
-        if (!empty($attr['format'])) {
-            $format = addslashes($attr['format']);
-        } else {
-            $format = App::blog()->settings()->system->date_format;
-        }
+        $format = empty($attr['format']) ? App::blog()->settings()->system->date_format : addslashes($attr['format']);
 
         $f = App::frontend()->template()->getFilters($attr);
 
@@ -194,8 +182,7 @@ class FrontendTemplate
         $ret = Html::escapeHTML($ret);
 
         return
-        '<?php if (App::frontend()->context()->comments->index()) { ' .
-        "echo '" . addslashes($ret) . "'; } ?>";
+        '<?php if (App::frontend()->context()->comments->index()) { echo \'' . addslashes($ret) . "'; } ?>";
     }
 
     /**
@@ -211,8 +198,7 @@ class FrontendTemplate
         $ret = Html::escapeHTML($ret);
 
         return
-        '<?php if (App::frontend()->context()->pings->index()) { ' .
-        "echo '" . addslashes($ret) . "'; } ?>";
+        '<?php if (App::frontend()->context()->pings->index()) { echo \'' . addslashes($ret) . "'; } ?>";
     }
 
     /**

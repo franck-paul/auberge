@@ -34,7 +34,7 @@ class Prepend extends Process
 
         // Add cleaners to Uninstaller
         App::behavior()->addBehaviors([
-            'UninstallerCleanersConstruct' => function (\Dotclear\Plugin\Uninstaller\CleanersStack $cleaners): void {
+            'UninstallerCleanersConstruct' => static function (\Dotclear\Plugin\Uninstaller\CleanersStack $cleaners) : void {
                 $cleaners
                     ->set(new Cleaner\Fields())
                 ;

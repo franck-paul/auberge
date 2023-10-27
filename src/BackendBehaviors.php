@@ -146,6 +146,7 @@ class BackendBehaviors
             $check_in  = CoreData::getUserCheckIn($rs->user_id);
             $check_out = CoreData::getUserCheckOut($rs->user_id);
         }
+
         $cols['room']      = '<td class="nowrap count">' . ($room ?: '') . '</td>';
         $cols['role']      = '<td class="nowrap">' . ($role ?: '') . '</td>';
         $cols['check_in']  = '<td class="nowrap">' . (strtotime($check_in) > 0 ? Date::dt2str(__('%Y-%m-%d'), $check_in) : '') . '</td>';
@@ -159,7 +160,7 @@ class BackendBehaviors
      */
     public static function adminUserForm($rs)
     {
-        if ($rs) {
+        if ($rs !== null) {
             $room      = CoreData::getUserRoom($rs->user_id);
             $role      = CoreData::getUserStaffRole($rs->user_id);
             $check_in  = CoreData::getUserCheckIn($rs->user_id);
@@ -172,8 +173,7 @@ class BackendBehaviors
         }
 
         echo
-        '<div class="fieldset"><h5 id="auberge">' .
-        '<img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
+        '<div class="fieldset"><h5 id="auberge"><img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
         '<p class="field"><label for="user_room_id">' . __('Room number:') . '</label> ' .
         form::number('user_room_id', [
             'min'     => 0,
@@ -200,6 +200,7 @@ class BackendBehaviors
                 Date::dt2str(__('%A, %B %e %Y'), $check_out)
             );
         }
+
         echo '</p></div>';
     }
 
@@ -234,7 +235,7 @@ class BackendBehaviors
         $title = __('Welcome to the hostel %s!');
 
         // Title: Pseudo
-        $ret .= '<h3>' . '<img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
+        $ret .= '<h3><img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
         sprintf($title, App::auth()->getInfo('user_displayname')) . '</h3>';
 
         // Stays
@@ -253,6 +254,7 @@ class BackendBehaviors
                     $is_staff = true;
                     $room_id -= 999;
                 }
+
                 $ret .= '<p>';
                 $ret .= sprintf(
                     __('You stay in the hostel from <strong>%s</strong> to <strong>%s</strong>'),
@@ -269,6 +271,7 @@ class BackendBehaviors
                 } else {
                     $ret .= __('No room assigned yet.');
                 }
+
                 $ret .= '</p>';
             }
         } else {
@@ -285,8 +288,7 @@ class BackendBehaviors
         $ret .= '<p>' . $info . '</p>';
 
         // Contact/Forum infos
-        $ret .= '<hr />' .
-        '<p>' .
+        $ret .= '<hr /><p>' .
         sprintf(__('<a href="%s">Contact the organizers of the game</a>'), $contact_url) . '<br />' .
         sprintf(__('<a href="%s">Forum</a>'), $forum_url) .
             '</p>';
