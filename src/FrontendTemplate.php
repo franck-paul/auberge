@@ -212,7 +212,7 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? DC_BLOG_SHORTNAME : App::blog()->id())') . '; ?>';
+        return '<?= ' . sprintf($f, '(defined(\'DC_BLOG_SHORTNAME\') ? constant(\'DC_BLOG_SHORTNAME\') : App::blog()->id())') . ' ?>';
     }
 
     /**
@@ -226,6 +226,6 @@ class FrontendTemplate
     {
         $f = App::frontend()->template()->getFilters($attr);
 
-        return '<?php echo ' . sprintf($f, CoreHelper::class . '::getTagLabel(App::frontend()->context()->meta->meta_id)') . '; ?>';
+        return '<?= ' . sprintf($f, CoreHelper::class . '::getTagLabel(App::frontend()->context()->meta->meta_id)') . ' ?>';
     }
 }

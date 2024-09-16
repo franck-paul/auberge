@@ -43,8 +43,8 @@ class BackendBehaviors
         // Ajout favicon spécifique
         if (App::auth()->prefs()->interface->hide_std_favicon) {
             echo
-                '<link rel="icon" type="image/png" href="favicon.png" />' . "\n" .
-                '<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />' . "\n";
+                '<link rel="icon" type="image/png" href="favicon.png">' . "\n" .
+                '<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">' . "\n";
         }
     }
 
@@ -173,7 +173,7 @@ class BackendBehaviors
         }
 
         echo
-        '<div class="fieldset"><h5 id="auberge"><img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' . __('Auberge') . '</h5>' .
+        '<div class="fieldset"><h5 id="auberge"><img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="">' . ' ' . __('Auberge') . '</h5>' .
         '<p class="field"><label for="user_room_id">' . __('Room number:') . '</label> ' .
         form::number('user_room_id', [
             'min'     => 0,
@@ -190,7 +190,7 @@ class BackendBehaviors
         '</p>' .
         '<p class="form-note">' . __('Used only for staff member.') . '</p>';
 
-        echo '<hr /><p>';
+        echo '<hr><p>';
         if (strtotime($check_in) <= 0 || strtotime($check_out) <= 0) {
             echo __('Dates of stay are not yet known.');
         } else {
@@ -219,7 +219,7 @@ class BackendBehaviors
     public static function adminDashboardContents($contents)
     {
         // Add modules to the contents stack
-        $forum_url = defined('DC_AUBERGE_FORUM_URL') ? DC_AUBERGE_FORUM_URL : '#';
+        $forum_url = defined('DC_AUBERGE_FORUM_URL') ? constant('DC_AUBERGE_FORUM_URL') : '#';
         if (App::auth()->isSuperAdmin() || (App::blog() && App::auth()->check(App::auth()->makePermissions([
             App::auth()::PERMISSION_CONTENT_ADMIN,
         ]), App::blog()->id()))) {
@@ -235,7 +235,7 @@ class BackendBehaviors
         $title = __('Welcome to the hostel %s!');
 
         // Title: Pseudo
-        $ret .= '<h3><img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="" />' . ' ' .
+        $ret .= '<h3><img src="' . urldecode(Page::getPF('auberge/icon.png')) . '" alt="">' . ' ' .
         sprintf($title, App::auth()->getInfo('user_displayname')) . '</h3>';
 
         // Stays
@@ -263,8 +263,8 @@ class BackendBehaviors
                 );
                 if ($room_id > 0) {
                     $info = $is_staff ? __('You\'re staying in the <strong>staff</strong> room number') : __('You\'re staying in room number');
-                    $ret .= '<br />' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
-                    sprintf('%d', $room_id) . '</strong><br />';
+                    $ret .= '<br>' . $info . '<strong class="badge badge-inline' . ($is_staff ? ' badge-info' : '') . '">' .
+                    sprintf('%d', $room_id) . '</strong><br>';
                     if ($is_staff && $position) {
                         $ret .= sprintf(__('Your staff position is: <strong>%s</strong>'), $position);
                     }
@@ -288,13 +288,13 @@ class BackendBehaviors
         $ret .= '<p>' . $info . '</p>';
 
         // Contact/Forum infos
-        $ret .= '<hr /><p>' .
-        sprintf(__('<a href="%s">Contact the organizers of the game</a>'), $contact_url) . '<br />' .
+        $ret .= '<hr><p>' .
+        sprintf(__('<a href="%s">Contact the organizers of the game</a>'), $contact_url) . '<br>' .
         sprintf(__('<a href="%s">Forum</a>'), $forum_url) .
             '</p>';
 
         $ret .= '</div>';
-        $contents[] = new ArrayObject([$ret]);
+        $contents->append(new ArrayObject([$ret]));
 
         // Other actions on Dashboard
         if (!App::auth()->isSuperAdmin() || !App::blog() || App::auth()->check(App::auth()->makePermissions([
