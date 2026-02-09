@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @brief auberge, a plugin for Dotclear 2
  *
@@ -15,7 +16,7 @@ declare(strict_types=1);
 namespace Dotclear\Plugin\auberge;
 
 use Dotclear\App;
-use Dotclear\Core\Frontend\Url;
+use Dotclear\Core\Url;
 use Dotclear\Helper\Network\Http;
 
 class FrontendUrl extends Url
